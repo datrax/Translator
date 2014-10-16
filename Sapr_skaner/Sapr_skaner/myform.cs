@@ -161,7 +161,7 @@ namespace Sapr_skaner
                             MainItems[i].IdConstCode = IdItems[Convert.ToInt16(IdItems.LongCount()) - 1].IdConstCode + 1;
                         IdItems.Add(MainItems[i]);
                     }
-                    if (MainItems[i + 1].LexemCode == 30 && i > 2)//label
+                    if (i<MainItems.LongCount()-1&&MainItems[i + 1].LexemCode == 30 && i > 2)//label
                     {
                         MainItems[i].type = 3;
                         LabelItems.Add(MainItems[i]);
@@ -286,15 +286,18 @@ namespace Sapr_skaner
             if (c == -1)
             {
                 tableform.Show();
+
                 str.Close();
             }
             else
             {
+              
                 str.Close();
                 textBox11.Select(find_line_position(c - 1), find_line_position(c) - find_line_position(c - 1));
                 //  textBox11.Focus();
                 // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
                 MessageBox.Show("Error in the line: " + c);
+                
             };
 
         }
@@ -311,6 +314,8 @@ namespace Sapr_skaner
             while (pos != row)
             {
 
+                if (str.Peek() == -1) { str.Close();  return ++count; }
+                
                 if (str.Read() == 13) pos++;
                 count++;
             }
