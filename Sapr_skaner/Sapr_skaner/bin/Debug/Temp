@@ -1,9 +1,10 @@
 init:program1
 /
+exit:
+exit:
 int a,b
 scan(a)
-exit:
-b=0.3E5
+b=3
 while (a>b) do
 /
  a=a-1

@@ -78,211 +78,216 @@ namespace Sapr_skaner
             {
                 re.Read();
             };
+
             while (LexNotFound)
             {
-                switch (mode)
+                if (can_read())
                 {
-                    case 1:
-                        {
-                            char s = Convert.ToChar(re.Read());
-                            lex += s;
-                            if (Char.IsLetter(s)) mode = 2;
-                            else if (s == '.') mode = 9;
-                            else if (Char.IsDigit(s)) mode = 4;
-                            else if (s == '!') mode = 10;
-                            else if (s == '=') mode = 11;
-                            else if (s == '>') mode = 12;
-                            else if (s == '<') mode = 13;
-                            else if (s == 13) { mode = 14; }//конец строки
-                            else if (IsSpecialLex(s)) { lex = s.ToString(); LexNotFound = false; }
-                            else{lex = "_Error"; LexNotFound = false;}
-                        } break;
-                    case 2:
-                        {
-                            if (Char.IsLetter(Convert.ToChar(re.Peek())) || Char.IsDigit(Convert.ToChar(re.Peek())))
-                                lex += Convert.ToChar(re.Read());
-                            else if (GetCode(lex) < 52)
+                    switch (mode)
+                    {
+                        case 1:
                             {
-                                LexNotFound = false;
-                            }
+                                char s = Convert.ToChar(re.Read());
+                                lex += s;
+                                if (Char.IsLetter(s)) mode = 2;
+                                else if (s == '.') mode = 9;
+                                else if (Char.IsDigit(s)) mode = 4;
+                                else if (s == '!') mode = 10;
+                                else if (s == '=') mode = 11;
+                                else if (s == '>') mode = 12;
+                                else if (s == '<') mode = 13;
+                                else if (s == 13) { mode = 14; }//конец строки
+                                else if (IsSpecialLex(s)) { lex = s.ToString(); LexNotFound = false; }
+                                else { lex = "_Error"; LexNotFound = false; }
+                            } break;
+                        case 2:
+                            {
+                                if (Char.IsLetter(Convert.ToChar(re.Peek())) || Char.IsDigit(Convert.ToChar(re.Peek())))
+                                    lex += Convert.ToChar(re.Read());
+                                else if (GetCode(lex) < 52)
+                                {
+                                    LexNotFound = false;
+                                }
                                 else
-                            {
-                                lex = "_Error";
-                                LexNotFound = false;
-                            }
-                           
-                        } break;
-                    case 3:
-                        {
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                            }
-                            else if (re.Peek().Equals('E'))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 6;
-                            }
-                            else
-                            {
-                                LexNotFound = false;
-                            }
-                        } break;
-                    case 4:
-                        {
+                                {
+                                    lex = "_Error";
+                                    LexNotFound = false;
+                                }
 
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                            } break;
+                        case 3:
                             {
-                                lex += Convert.ToChar(re.Read());
-                            }
-
-                            else if (re.Peek().Equals('.'))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 5;
-                            }
-
-                            else if (re.Peek().Equals('E'))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 6;
-                            }
-                            else LexNotFound = false;
-                        }
-                        break;
-                    case 5:
-                        {
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 3;
-                            }
-                          
-                            else
-                            {
-                                lex = "_Error";
-                                LexNotFound = false;
-                            }
-                        } break;
-                    case 6:
-                        {
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 8;
-                            }
-                            else if (re.Peek().Equals('-'))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 7;
-                            }
-                            else
-                            {
-                                lex = "_Error";
-                                LexNotFound = false;
-                            }
-                        } break;
-                    case 7:
-                        {
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
-                            {
-                                lex += Convert.ToChar(re.Read());
-                                mode = 8;
-                            }
-                            else
-                            {
-                                lex = "_Error";
-                                LexNotFound = false;
-                            }
-                        } break;
-                    case 8:
-                        {
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
-                                lex += Convert.ToChar(re.Read());
-                            else
-                                LexNotFound = false;
-                        } break;
-                    case 9:
-                        {
-                            if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                }
+                                else if (re.Peek().Equals('E'))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 6;
+                                }
+                                else
+                                {
+                                    LexNotFound = false;
+                                }
+                            } break;
+                        case 4:
                             {
 
-                                mode = 3;
-                            }
-                            else
-                            {
-                                lex = "_Error";
-                                LexNotFound = false;
-                            }
-                        } break;
-                    case 10:
-                        {
-                            if (re.Peek() == ' ')
-                            {
-                                lex = "!=";
-                                re.Read();
-                            }
-                            else lex = "_Error";
-                        }
-                        break;
-                    case 11:
-                        {
-                            if (re.Peek() == '=')
-                            {
-                                lex = "==";
-                                re.Read();
-                                LexNotFound = false;
-                            }
-                            else { lex = "="; LexNotFound = false; }
-                        }
-                        break;
-                    case 12:
-                        {
-                            if (re.Peek() == '=')
-                            {
-                                lex = ">=";
-                                re.Read();
-                                LexNotFound = false;
-                            }
-                            else
-                            {
-                                lex = ">";
-                                LexNotFound = false;
-                            }
-                        }
-                        break;
-                    case 13:
-                        {
-                            if (re.Peek() == '=')
-                            {
-                                lex = "<=";
-                                re.Read();
-                                LexNotFound = false;
-                            }
-                            else
-                            {
-                                lex = "<";
-                                LexNotFound = false;
-                            }
-                        }
-                        break;
-                    case 14:
-                        {
-                            if (re.Peek() == 10)
-                            {
-                                lex = "¶";
-                                re.Read();
-                                LexNotFound = false;
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                }
 
+                                else if (re.Peek().Equals('.'))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 5;
+                                }
+
+                                else if (re.Peek().Equals('E'))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 6;
+                                }
+                                else LexNotFound = false;
                             }
-                            else { lex = "_Error"; LexNotFound = false; }
-                        } break;
-                    default: lex = "_Error"; break;
+                            break;
+                        case 5:
+                            {
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 3;
+                                }
+
+                                else
+                                {
+                                    lex = "_Error";
+                                    LexNotFound = false;
+                                }
+                            } break;
+                        case 6:
+                            {
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 8;
+                                }
+                                else if (re.Peek().Equals('-'))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 7;
+                                }
+                                else
+                                {
+                                    lex = "_Error";
+                                    LexNotFound = false;
+                                }
+                            } break;
+                        case 7:
+                            {
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                {
+                                    lex += Convert.ToChar(re.Read());
+                                    mode = 8;
+                                }
+                                else
+                                {
+                                    lex = "_Error";
+                                    LexNotFound = false;
+                                }
+                            } break;
+                        case 8:
+                            {
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                    lex += Convert.ToChar(re.Read());
+                                else
+                                    LexNotFound = false;
+                            } break;
+                        case 9:
+                            {
+                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
+                                {
+
+                                    mode = 3;
+                                }
+                                else
+                                {
+                                    lex = "_Error";
+                                    LexNotFound = false;
+                                }
+                            } break;
+                        case 10:
+                            {
+                                if (re.Peek() == ' ')
+                                {
+                                    lex = "!=";
+                                    re.Read();
+                                }
+                                else lex = "_Error";
+                            }
+                            break;
+                        case 11:
+                            {
+                                if (re.Peek() == '=')
+                                {
+                                    lex = "==";
+                                    re.Read();
+                                    LexNotFound = false;
+                                }
+                                else { lex = "="; LexNotFound = false; }
+                            }
+                            break;
+                        case 12:
+                            {
+                                if (re.Peek() == '=')
+                                {
+                                    lex = ">=";
+                                    re.Read();
+                                    LexNotFound = false;
+                                }
+                                else
+                                {
+                                    lex = ">";
+                                    LexNotFound = false;
+                                }
+                            }
+                            break;
+                        case 13:
+                            {
+                                if (re.Peek() == '=')
+                                {
+                                    lex = "<=";
+                                    re.Read();
+                                    LexNotFound = false;
+                                }
+                                else
+                                {
+                                    lex = "<";
+                                    LexNotFound = false;
+                                }
+                            }
+                            break;
+                        case 14:
+                            {
+                                if (re.Peek() == 10)
+                                {
+                                    lex = "¶";
+                                    re.Read();
+                                    LexNotFound = false;
+
+                                }
+                                else { lex = "_Error"; LexNotFound = false; }
+                            } break;
+                        default: lex = "_Error"; break;
+                    }
                 }
+                else LexNotFound = false;
             }
             return lex;
         }
-        public bool next()
+        public bool can_read()
         {
             if (re.Peek() > -1) return true;
             else return false;
@@ -298,7 +303,7 @@ namespace Sapr_skaner
             if (LexemCode == 1) type = 4;
             if (LexemCode == 2) type = 1;
             if (LexemCode == 3) type = 2;
-            if (LexemCode == 12) type = 3;
+            if (LexemCode == 12) type = 5;
             if (LexemCode == 31) type = 0;
             Lexems ans = new Lexems(LexemNumber, RowNumber, t, LexemCode, IdConstCode, type);
             if (LexemCode == 31) RowNumber++;

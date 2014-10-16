@@ -17,20 +17,29 @@ namespace Sapr_skaner
         private Button button1;
         private Button button2;
         private Button button3;
-        private List<Lexems> Items;
-        private List<String> IdCode;
-        private List<String> ConstCode;
-        private List<int> IdType;
+        private List<Lexems> MainItems;
+        private List<Lexems> ConstItems;
+        private List<Lexems> IdItems;
+        private List<Lexems> GotoItems;
+        private List<Lexems> LabelItems;
+        //   private List<String> IdCode;
+        //   private List<String> ConstCode;
+        //   private List<int> IdType;
         private TextBox textBox11;
-      //  LexemsTable tableform;
+        //  LexemsTable tableform;
         string path;
-        public myform(){
+        public myform()
+        {
             InitializeComponent();
-            Items = new List<Lexems>();
-           // tableform  = new LexemsTable();
-            IdCode=new List<string>();
-            ConstCode = new List<string>();
-            IdType = new List<int>();
+            ConstItems = new List<Lexems>();
+            MainItems = new List<Lexems>();
+            IdItems = new List<Lexems>();
+            GotoItems = new List<Lexems>();
+            LabelItems = new List<Lexems>();
+            // tableform  = new LexemsTable();
+            //       IdCode=new List<string>();
+            //      ConstCode = new List<string>();
+            //       IdType = new List<int>();
         }
         #region Initform
         private void InitializeComponent()
@@ -98,13 +107,13 @@ namespace Sapr_skaner
         }
         #endregion
 
-        public void load_text(StreamReader str,string path)
+        public void load_text(StreamReader str, string path)
         {
-        textBox11.Text = str.ReadToEnd();    
-        textBox11.ScrollBars = ScrollBars.Both;
-        this.path = path;
-        textBox11.Select(0, 0);
-    }
+            textBox11.Text = str.ReadToEnd();
+            textBox11.ScrollBars = ScrollBars.Both;
+            this.path = path;
+            textBox11.Select(0, 0);
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -114,105 +123,165 @@ namespace Sapr_skaner
             sf.InitialDirectory = path;
             if (sf.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                File.WriteAllText(sf.FileName, textBox11.Text, Encoding.Default); 
-                
+                File.WriteAllText(sf.FileName, textBox11.Text, Encoding.Default);
+
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            File.WriteAllText(path, textBox11.Text, Encoding.Default); 
+            File.WriteAllText(path, textBox11.Text, Encoding.Default);
         }
-
         int Validate(LexemsTable tableform)
         {
-            
-           
-            int IdConstCode = 0;
-            int CoCode = 0;
-            for (int i = 0; i < Items.LongCount(); i++)
+            for (int i = 0; i < MainItems.LongCount(); i++)
             {
 
-                if (Items[i].LexemCode == -1) return Items[i].RowNumber;
-                if (Items[i].LexemCode == 50)
+                if (MainItems[i].LexemCode == -1) return MainItems[i].RowNumber;
+                if (MainItems[i].LexemCode == 50)
                 {
+
                     bool notfound = true;
-                    for (int j = 0; j < IdCode.LongCount(); j++)
+                    for (int j = 0; j < IdItems.LongCount(); j++)
                     {
-                        if (Items[i].LexemName.Equals(IdCode[j]))
+                        if (MainItems[i].LexemName.Equals(IdItems[j].LexemName))
                         {
-                            IdConstCode = j + 1; notfound = false;
-                            if (Items[i].type != 0) return Items[i].RowNumber;//проверка повтора в одном блоке обьявл
+                            MainItems[i].IdConstCode = IdItems[j].IdConstCode;
+                            MainItems[i].type = IdItems[j].type;
+                            notfound = false;
+                            
+                            if (MainItems[i].RowNumber == IdItems[j].RowNumber)
+                                return MainItems[i].RowNumber;
                         }
                     }
-                    if (notfound)
+                    if (notfound && MainItems[i].type > 0)
                     {
-                        if (Items[i].type == 0) return Items[i].RowNumber;//проверка инициализации переменной  
-                        
-                            IdConstCode++; IdCode.Add(Items[i].LexemName);
-                            IdType.Add(Items[i].type);
-                        
-                      
-                      
+                        if (IdItems.LongCount() == 0) MainItems[i].IdConstCode = 1;
+                        else
+                            MainItems[i].IdConstCode = IdItems[Convert.ToInt16(IdItems.LongCount()) - 1].IdConstCode + 1;
+                        IdItems.Add(MainItems[i]);
                     }
-
-                    Items[i].IdConstCode = IdConstCode;
+                    if (MainItems[i + 1].LexemCode == 30 && i > 2)//label
+                    {
+                        MainItems[i].type = 3;
+                        LabelItems.Add(MainItems[i]);
+                    }
+                    if (MainItems[i].type == 5) GotoItems.Add(MainItems[i]);
+                    if (MainItems[i].type == 0)
+                        return MainItems[i].RowNumber;
                 }
-                else Items[0].type = 0;//обнуляем лишний тип
-                if (Items[i].LexemCode == 51)
+                else
+                    MainItems[i].type = 0;//Убираем тип с запятых и т.д.
+                if (MainItems[i].LexemCode == 51)
                 {
                     bool notfound = true;
-                    for (int j = 0; j < ConstCode.LongCount(); j++)
+                    for (int j = 0; j < ConstItems.LongCount(); j++)
                     {
-                        if (Items[i].LexemName.Equals(IdCode[j]))
-                        { CoCode = j + 1; notfound = false; }
+                        if (MainItems[i].LexemName.Equals(ConstItems[j].LexemName))
+                        {
+                            MainItems[i].IdConstCode = ConstItems[j].IdConstCode;
+                            MainItems[i].type = ConstItems[j].type;
+                            notfound = false;
+                        }
                     }
+                    
                     if (notfound)
                     {
-                        CoCode++; ConstCode.Add(Items[i].LexemName);
+                        if (ConstItems.LongCount() == 0) MainItems[i].IdConstCode = 1;
+                        else
+                            MainItems[i].IdConstCode = ConstItems[Convert.ToInt16(ConstItems.LongCount()) - 1].IdConstCode + 1;
+                        ConstItems.Add(MainItems[i]);
                     }
 
-                    Items[i].IdConstCode = CoCode; 
+                    
                 }
 
-                tableform.LexemTable.Rows.Add(Items[i].LexemNumber, Items[i].RowNumber, Items[i].LexemName, Items[i].LexemCode, Items[i].IdConstCode.ToString() == "0" ? " " : Items[i].IdConstCode.ToString());/////////////
-          
+                tableform.LexemTable.Rows.Add(MainItems[i].LexemNumber, MainItems[i].RowNumber, MainItems[i].LexemName, MainItems[i].LexemCode, MainItems[i].IdConstCode.ToString() == "0" ? " " : MainItems[i].IdConstCode.ToString());
             }
-            for (int j = 0; j < IdCode.LongCount(); j++)
+            Lexems t;
+            if (CheckingLabels(out t))
+            {
+                return t.RowNumber;
+            };
+            /*  */
+            foreach (Lexems g in IdItems)
             {
                 string type = "";
-                if (IdType[j] == 1) type = "int";
-                if (IdType[j] == 2) type = "real";
-                if (IdType[j] == 3) type = "label";
-                tableform.IdTable.Rows.Add(IdCode[j],j + 1,type);//////////////////
+                if (g.type == 1) type = "int";
+                if (g.type == 2) type = "real";
+                if (g.type == 5) type = "label";
+                tableform.IdTable.Rows.Add(g.LexemName, g.IdConstCode, type);///////////////
             }
-            for (int j = 0; j < ConstCode.LongCount(); j++)
+            foreach (Lexems g in ConstItems)
             {
-                tableform.ConstTable.Rows.Add(ConstCode[j], j + 1);///////////////
+                tableform.ConstTable.Rows.Add(g.LexemName, g.IdConstCode, g.type);///////////////
             }
             return -1;
         }
+        bool CheckingLabels(out Lexems t)
+        {
+            for (int i = 0; i < GotoItems.LongCount(); i++)
+                for (int j = i + 1; j < GotoItems.LongCount(); j++)
+                {
+                    if (GotoItems[i].LexemName == GotoItems[j].LexemName)
+                    {
+                        t = GotoItems[j];
+                        return true;
+                    }
+                }
+
+            if (GotoItems.LongCount() != LabelItems.LongCount())
+                if (GotoItems.LongCount() > LabelItems.LongCount())
+                {
+                    t = GotoItems[0];
+                    return true;
+                }
+                else
+                {
+                    t = LabelItems[0];
+                    return true;
+                }
+            for (int i = 0; i < GotoItems.LongCount(); i++)
+            {
+                for (int j = 0; j < LabelItems.LongCount(); j++)
+                    if (LabelItems[j].LexemName.Equals(GotoItems[i].LexemName))
+                    {
+                        LabelItems.RemoveAt(j);
+                        break;
+                    }
+
+            }
+            if (LabelItems.LongCount() > 0)
+            {
+                t = LabelItems[0];
+                return true;
+            }
+            t = null;
+            return false;
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             start_lexem_determination();
-     
+
         }
 
-      
+
         void start_lexem_determination()
         {
-            IdCode = new List<string>();
-            ConstCode = new List<string>();
-            IdType = new List<int>();
-            Items.Clear();
+
+            IdItems.Clear();
+              ConstItems.Clear();
+            GotoItems.Clear();
+            LabelItems.Clear();
+            MainItems.Clear();
             LexemsTable tableform = new LexemsTable();
             StreamReader str;
-            // str = File.OpenText(path);
             File.WriteAllText("Temp", textBox11.Text, Encoding.Default);
             str = File.OpenText("Temp");
             LexFind ob = new LexFind(str);
-            while (ob.next())
-                Items.Add(ob.NextLex());
+            while (ob.can_read())
+                MainItems.Add(ob.NextLex());
             int c = Validate(tableform);
             if (c == -1)
             {
@@ -221,13 +290,13 @@ namespace Sapr_skaner
             }
             else
             {
-                str.Close();               
-                textBox11.Select(find_line_position(c - 1), find_line_position(c) - find_line_position(c-1));
-              //  textBox11.Focus();
-               // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
+                str.Close();
+                textBox11.Select(find_line_position(c - 1), find_line_position(c) - find_line_position(c - 1));
+                //  textBox11.Focus();
+                // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
                 MessageBox.Show("Error in the line: " + c);
             };
-   
+
         }
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
@@ -238,11 +307,11 @@ namespace Sapr_skaner
         {
             StreamReader str;
             str = File.OpenText("Temp");
-            int pos = 0,count=0;
+            int pos = 0, count = 0;
             while (pos != row)
             {
 
-                if(str.Read()==13)pos++;
+                if (str.Read() == 13) pos++;
                 count++;
             }
             str.Close();
