@@ -132,12 +132,13 @@ namespace Sapr_skaner
         {
             File.WriteAllText(path, textBox11.Text, Encoding.Default);
         }
-        int Validate(LexemsTable tableform)
+        bool Validate(LexemsTable tableform, out int c,out string text)
         {
+            c = 0; text = "";
             for (int i = 0; i < MainItems.LongCount(); i++)
             {
 
-                if (MainItems[i].LexemCode == -1) return MainItems[i].RowNumber;
+                if (MainItems[i].LexemCode == -1) { c = MainItems[i].RowNumber; text = "Undefined lexem"; return false; }
                 if (MainItems[i].LexemCode == 50)
                 {
 
@@ -151,7 +152,7 @@ namespace Sapr_skaner
                             notfound = false;
                             
                             if (MainItems[i].RowNumber == IdItems[j].RowNumber)
-                                return MainItems[i].RowNumber;
+                            { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }
                         }
                     }
                     if (notfound && MainItems[i].type > 0)
@@ -168,7 +169,7 @@ namespace Sapr_skaner
                     }
                     if (MainItems[i].type == 5) GotoItems.Add(MainItems[i]);
                     if (MainItems[i].type == 0)
-                        return MainItems[i].RowNumber;
+                    { c = MainItems[i].RowNumber; text = "Undefined variable"; return false; }
                 }
                 else
                     MainItems[i].type = 0;//Убираем тип с запятых и т.д.
@@ -199,9 +200,9 @@ namespace Sapr_skaner
                 tableform.LexemTable.Rows.Add(MainItems[i].LexemNumber, MainItems[i].RowNumber, MainItems[i].LexemName, MainItems[i].LexemCode, MainItems[i].IdConstCode.ToString() == "0" ? " " : MainItems[i].IdConstCode.ToString());
             }
             Lexems t;
-            if (CheckingLabels(out t))
+            if (CheckingLabels(out t,out text))
             {
-                return t.RowNumber;
+                { c = t.RowNumber; return false; }
             };
             /*  */
             foreach (Lexems g in IdItems)
@@ -216,9 +217,10 @@ namespace Sapr_skaner
             {
                 tableform.ConstTable.Rows.Add(g.LexemName, g.IdConstCode, g.type);///////////////
             }
-            return -1;
+            
+            return true;
         }
-        bool CheckingLabels(out Lexems t)
+        bool CheckingLabels(out Lexems t,out string text)
         {
             for (int i = 0; i < GotoItems.LongCount(); i++)
                 for (int j = i + 1; j < GotoItems.LongCount(); j++)
@@ -226,6 +228,7 @@ namespace Sapr_skaner
                     if (GotoItems[i].LexemName == GotoItems[j].LexemName)
                     {
                         t = GotoItems[j];
+                        text = "The same label";
                         return true;
                     }
                 }
@@ -234,11 +237,13 @@ namespace Sapr_skaner
                 if (GotoItems.LongCount() > LabelItems.LongCount())
                 {
                     t = GotoItems[0];
+                    text = "Label's not found";
                     return true;
                 }
                 else
                 {
                     t = LabelItems[0];
+                    text = "goto is not found";
                     return true;
                 }
             for (int i = 0; i < GotoItems.LongCount(); i++)
@@ -254,9 +259,11 @@ namespace Sapr_skaner
             if (LabelItems.LongCount() > 0)
             {
                 t = LabelItems[0];
+                text = "goto is not found";
                 return true;
             }
             t = null;
+            text = "";
             return false;
         }
 
@@ -282,8 +289,9 @@ namespace Sapr_skaner
             LexFind ob = new LexFind(str);
             while (ob.can_read())
                 MainItems.Add(ob.NextLex());
-            int c = Validate(tableform);
-            if (c == -1)
+            int c; string text="";
+            if( Validate(tableform,out c,out text))
+            
             {
                 tableform.Show();
 
@@ -296,7 +304,7 @@ namespace Sapr_skaner
                 textBox11.Select(find_line_position(c - 1), find_line_position(c) - find_line_position(c - 1));
                 //  textBox11.Focus();
                 // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
-                MessageBox.Show("Error in the line: " + c);
+                MessageBox.Show("Error!  "+text+"  line: " + c);
                 
             };
 
