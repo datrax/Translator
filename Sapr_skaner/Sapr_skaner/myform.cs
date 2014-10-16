@@ -22,11 +22,9 @@ namespace Sapr_skaner
         private List<Lexems> IdItems;
         private List<Lexems> GotoItems;
         private List<Lexems> LabelItems;
-        //   private List<String> IdCode;
-        //   private List<String> ConstCode;
-        //   private List<int> IdType;
+ 
         private TextBox textBox11;
-        //  LexemsTable tableform;
+
         string path;
         public myform()
         {
@@ -36,10 +34,7 @@ namespace Sapr_skaner
             IdItems = new List<Lexems>();
             GotoItems = new List<Lexems>();
             LabelItems = new List<Lexems>();
-            // tableform  = new LexemsTable();
-            //       IdCode=new List<string>();
-            //      ConstCode = new List<string>();
-            //       IdType = new List<int>();
+
         }
         #region Initform
         private void InitializeComponent()
@@ -301,7 +296,7 @@ namespace Sapr_skaner
             {
               
                 str.Close();
-                textBox11.Select(find_line_position(c - 1), find_line_position(c) - find_line_position(c - 1));
+                textBox11.Select(find_line_position(c - 1)+1, find_line_position(c) - find_line_position(c - 1)-2);//-2 and +1 to avoid catching special symbols
                 //  textBox11.Focus();
                 // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
                 MessageBox.Show("Error!  "+text+"  line: " + c);

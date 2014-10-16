@@ -1,15 +1,14 @@
 init:program1
 /
-
 int a,b
 scan(a)
 b=3
+f
 while (a>b) do
 /
  a=a-1
  if (a<b) then
   goto exit
-goto exit
   else
    print(a)
   endif
