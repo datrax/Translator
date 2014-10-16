@@ -31,3 +31,6 @@ F:\сапр\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.LexemsTable.resources
 F:\сапр\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.myform.resources
 F:\сапр\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.Properties.Resources.resources
 F:\сапр\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.csproj.GenerateResource.Cache
+C:\Users\Denis Datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Sapr_skaner.exe.config
+C:\Users\Denis Datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.exe
+C:\Users\Denis Datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.pdb
