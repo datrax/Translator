@@ -1,10 +1,7 @@
 init:program1
 /
-exit:
-exit:
-
+h.3
 int a,b
-
 scan(a)
 b=3
 while (a>b) do
@@ -16,4 +13,5 @@ while (a>b) do
    print(a)
   endif
 \
+exit:
 \

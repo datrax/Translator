@@ -90,7 +90,7 @@ namespace Sapr_skaner
                                 char s = Convert.ToChar(re.Read());
                                 lex += s;
                                 if (Char.IsLetter(s)) mode = 2;
-                                else if (s == '.') mode = 9;
+                                
                                 else if (Char.IsDigit(s)) mode = 4;
                                 else if (s == '!') mode = 10;
                                 else if (s == '=') mode = 11;
@@ -205,19 +205,7 @@ namespace Sapr_skaner
                                 else
                                     LexNotFound = false;
                             } break;
-                        case 9:
-                            {
-                                if (Char.IsDigit(Convert.ToChar(re.Peek())))
-                                {
-
-                                    mode = 3;
-                                }
-                                else
-                                {
-                                    lex = "_Error";
-                                    LexNotFound = false;
-                                }
-                            } break;
+                
                         case 10:
                             {
                                 if (re.Peek() == ' ')
