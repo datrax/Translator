@@ -142,12 +142,14 @@ namespace Sapr_skaner
                     {
                         if (MainItems[i].LexemName.Equals(IdItems[j].LexemName))
                         {
+                            if (MainItems[i].type.Equals(IdItems[j].type))
+                            { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }
                             MainItems[i].IdConstCode = IdItems[j].IdConstCode;
                             MainItems[i].type = IdItems[j].type;
                             notfound = false;
                             
-                            if (MainItems[i].RowNumber == IdItems[j].RowNumber)
-                            { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }
+                            /*if (MainItems[i].RowNumber == IdItems[j].RowNumber)
+                            { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }*/
                         }
                     }
                     if (notfound && MainItems[i].type > 0)
@@ -194,6 +196,16 @@ namespace Sapr_skaner
 
                 tableform.LexemTable.Rows.Add(MainItems[i].LexemNumber, MainItems[i].RowNumber, MainItems[i].LexemName, MainItems[i].LexemCode, MainItems[i].IdConstCode.ToString() == "0" ? " " : MainItems[i].IdConstCode.ToString());
             }
+          /*  for (int i = 0; i < IdItems.LongCount(); i++)
+                for (int j = i + 1; j < IdItems.LongCount(); j++)
+                {
+                    if (IdItems[i].LexemName == IdItems[j].LexemName)
+                    {
+                        c = IdItems[j].RowNumber;
+                        text = "The same label";
+                        return true;
+                    }
+                }*/
             Lexems t;
             if (CheckingLabels(out t,out text))
             {
