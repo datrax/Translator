@@ -1,0 +1,11 @@
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Sapr_skaner.exe.config
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Sapr_skaner.exe
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Sapr_skaner.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.csprojResolveAssemblyReference.cache
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.Form1.resources
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.LexemsTable.resources
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.myform.resources
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.Properties.Resources.resources
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.csproj.GenerateResource.Cache
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.exe
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.pdb

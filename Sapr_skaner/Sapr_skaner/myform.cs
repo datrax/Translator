@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 
 
-namespace Sapr_skaner
+namespace Skaner
 {
     public class myform : Form
     {
@@ -282,10 +282,10 @@ namespace Sapr_skaner
 
 
         void start_lexem_determination()
-        {
-
+        {   
+           
             IdItems.Clear();
-              ConstItems.Clear();
+            ConstItems.Clear();
             GotoItems.Clear();
             LabelItems.Clear();
             MainItems.Clear();
@@ -309,7 +309,7 @@ namespace Sapr_skaner
               
                 str.Close();
                 textBox11.Select(find_line_position(c - 1)+1, find_line_position(c) - find_line_position(c - 1)-2);//-2 and +1 to avoid catching special symbols
-                //  textBox11.Focus();
+                textBox11.Focus();
                 // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
                 MessageBox.Show("Error!  "+text+"  line: " + c);
                 

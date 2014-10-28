@@ -1,4 +1,4 @@
-﻿namespace Sapr_skaner
+﻿namespace Skaner
 {
     partial class Form1
     {

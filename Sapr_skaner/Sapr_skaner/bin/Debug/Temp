@@ -1,6 +1,5 @@
 init:program1
 /
-h.3
 int a,b
 scan(a)
 b=3

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Sapr_skaner
+namespace Skaner
 {
     public partial class LexemsTable : Form
     {

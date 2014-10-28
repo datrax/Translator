@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Sapr_skaner
+namespace Skaner
 {
     class LexFind
     {
