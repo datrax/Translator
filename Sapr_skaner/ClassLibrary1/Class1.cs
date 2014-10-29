@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Parser
+namespace ClassLibrary1
 {
     public class Class1
     {
-        
     }
 }

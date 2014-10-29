@@ -8,7 +8,6 @@ namespace Skaner
 {
     class Lexems
     {
-        List<Lexems> fg;
         public Lexems(int a,int b,string c,int d,int e,int f){
             RowNumber = b;
             LexemNumber = a;

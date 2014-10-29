@@ -54,7 +54,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="LexFind.cs" />
-    <Compile Include="Lexems.cs" />
     <Compile Include="LexemsTable.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +97,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lexems\Lexems.csproj">
+      <Project>{9ecb6d8d-cc64-4e17-a349-c5a0b07a41db}</Project>
+      <Name>Lexems</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Parser\Parser.csproj">
+      <Project>{e1f43a4f-f3aa-42b2-ad6f-563b56bf81cc}</Project>
+      <Name>Parser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

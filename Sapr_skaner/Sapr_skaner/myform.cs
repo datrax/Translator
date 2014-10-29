@@ -22,7 +22,7 @@ namespace Skaner
         private List<Lexems> IdItems;
         private List<Lexems> GotoItems;
         private List<Lexems> LabelItems;
- 
+
         private TextBox textBox11;
 
         string path;
@@ -127,7 +127,7 @@ namespace Skaner
         {
             File.WriteAllText(path, textBox11.Text, Encoding.Default);
         }
-        bool Validate(LexemsTable tableform, out int c,out string text)
+        bool Validate(LexemsTable tableform, out int c, out string text)
         {
             c = 0; text = "";
             for (int i = 0; i < MainItems.LongCount(); i++)
@@ -147,7 +147,7 @@ namespace Skaner
                             MainItems[i].IdConstCode = IdItems[j].IdConstCode;
                             MainItems[i].type = IdItems[j].type;
                             notfound = false;
-                            
+
                             /*if (MainItems[i].RowNumber == IdItems[j].RowNumber)
                             { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }*/
                         }
@@ -159,7 +159,7 @@ namespace Skaner
                             MainItems[i].IdConstCode = IdItems[Convert.ToInt16(IdItems.LongCount()) - 1].IdConstCode + 1;
                         IdItems.Add(MainItems[i]);
                     }
-                    if (i<MainItems.LongCount()-1&&MainItems[i + 1].LexemCode == 30 && i > 2)//label
+                    if (i < MainItems.LongCount() - 1 && MainItems[i + 1].LexemCode == 30 && i > 2)//label
                     {
                         MainItems[i].type = 3;
                         LabelItems.Add(MainItems[i]);
@@ -182,7 +182,7 @@ namespace Skaner
                             notfound = false;
                         }
                     }
-                    
+
                     if (notfound)
                     {
                         if (ConstItems.LongCount() == 0) MainItems[i].IdConstCode = 1;
@@ -191,23 +191,23 @@ namespace Skaner
                         ConstItems.Add(MainItems[i]);
                     }
 
-                    
+
                 }
 
                 tableform.LexemTable.Rows.Add(MainItems[i].LexemNumber, MainItems[i].RowNumber, MainItems[i].LexemName, MainItems[i].LexemCode, MainItems[i].IdConstCode.ToString() == "0" ? " " : MainItems[i].IdConstCode.ToString());
             }
-          /*  for (int i = 0; i < IdItems.LongCount(); i++)
-                for (int j = i + 1; j < IdItems.LongCount(); j++)
-                {
-                    if (IdItems[i].LexemName == IdItems[j].LexemName)
-                    {
-                        c = IdItems[j].RowNumber;
-                        text = "The same label";
-                        return true;
-                    }
-                }*/
+            /*  for (int i = 0; i < IdItems.LongCount(); i++)
+                  for (int j = i + 1; j < IdItems.LongCount(); j++)
+                  {
+                      if (IdItems[i].LexemName == IdItems[j].LexemName)
+                      {
+                          c = IdItems[j].RowNumber;
+                          text = "The same label";
+                          return true;
+                      }
+                  }*/
             Lexems t;
-            if (CheckingLabels(out t,out text))
+            if (CheckingLabels(out t, out text))
             {
                 { c = t.RowNumber; return false; }
             };
@@ -224,10 +224,10 @@ namespace Skaner
             {
                 tableform.ConstTable.Rows.Add(g.LexemName, g.IdConstCode, g.type);///////////////
             }
-            
+
             return true;
         }
-        bool CheckingLabels(out Lexems t,out string text)
+        bool CheckingLabels(out Lexems t, out string text)
         {
             for (int i = 0; i < GotoItems.LongCount(); i++)
                 for (int j = i + 1; j < GotoItems.LongCount(); j++)
@@ -280,10 +280,16 @@ namespace Skaner
 
         }
 
-
+        void displa_error_message(int c, string text)
+        {
+            textBox11.Select(find_line_position(c - 1) + 1, find_line_position(c) - find_line_position(c - 1) - 2);//-2 and +1 to avoid catching special symbols
+            textBox11.Focus();
+            // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
+            MessageBox.Show("Error!  " + text + "  line: " + c);
+        }
         void start_lexem_determination()
-        {   
-           
+        {
+
             IdItems.Clear();
             ConstItems.Clear();
             GotoItems.Clear();
@@ -296,25 +302,25 @@ namespace Skaner
             LexFind ob = new LexFind(str);
             while (ob.can_read())
                 MainItems.Add(ob.NextLex());
-            int c; string text="";
-            if( Validate(tableform,out c,out text))
-            
+            int c; string text = "";
+            if (Validate(tableform, out c, out text))
             {
-                tableform.Show();
-
-                str.Close();
+               // tableform.Show();
             }
             else
             {
-              
-                str.Close();
-                textBox11.Select(find_line_position(c - 1)+1, find_line_position(c) - find_line_position(c - 1)-2);//-2 and +1 to avoid catching special symbols
-                textBox11.Focus();
-                // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
-                MessageBox.Show("Error!  "+text+"  line: " + c);
-                
+                displa_error_message(c, text);
             };
-
+            str.Close();
+            Parser.Parser parsobj = new Parser.Parser(MainItems);
+            if (parsobj.check(out c, out text))
+            {
+                MessageBox.Show(text);
+            }
+            else
+            {
+                displa_error_message(c, text);
+            }
         }
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
@@ -329,8 +335,8 @@ namespace Skaner
             while (pos != row)
             {
 
-                if (str.Peek() == -1) { str.Close();  return ++count; }
-                
+                if (str.Peek() == -1) { str.Close(); return ++count; }
+
                 if (str.Read() == 13) pos++;
                 count++;
             }

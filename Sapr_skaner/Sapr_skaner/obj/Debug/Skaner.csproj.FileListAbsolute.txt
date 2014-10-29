@@ -9,3 +9,7 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sk
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.csproj.GenerateResource.Cache
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.exe
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Lexems.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Parser.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Lexems.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Parser.pdb
