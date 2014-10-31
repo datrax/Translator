@@ -283,7 +283,7 @@ namespace Skaner
 
         public Lexems NextLex()
         {
-            //1-int 2-real 3-label 4-name of program
+            //1-int 2-real 3-label 4-name of program 5-init label
             int IdConstCode = 0;
             string t = ChooseLexema();
             LexemCode = GetCode(t);
