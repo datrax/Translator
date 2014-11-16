@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Parser
 {
+
     public class Parser
     {
 
         List<Skaner.Lexems> Lexems;
         Skaner.Lexems CurrentLexem;
-        int count, last;
+        int count;
         public Parser(List<Skaner.Lexems> Lexems)
         {
             this.Lexems = new List<Skaner.Lexems>(Lexems);
             count = 0;
-            last = 0;
         }
         public Parser(Parser t)
         {
@@ -31,24 +31,18 @@ namespace Parser
                 t.Add(CurrentLexem);
             return t;
         }
-        private void SavePos()
-        {
-            last = count;
-        }
-        private void LoadLastPos()
-        {
-            count = last;
-        }
+        
 
         Skaner.Lexems TryNextLexem()
         {
-            if (count > Lexems.Count)
-                return null;
+            System.Diagnostics.Debug.WriteLine("count=" + count.ToString() + "|" + Lexems.Count.ToString());
+            if (count >= Lexems.Count)
+            { return new Skaner.Lexems() { LexemCode = -1 }; }
             else return Lexems[count];
         }
         Skaner.Lexems GetNextLexem()
         {
-            if (count > Lexems.Count)
+            if (count >= Lexems.Count)
                 return null;
             else
             {
@@ -56,289 +50,667 @@ namespace Parser
                 return CurrentLexem;
             }
         }
-        public bool check(out int c, out string text)
+        public bool check()
         {
 
-            if (GetNextLexem().LexemCode == 1)
-                if (GetNextLexem().LexemCode == 30)
-                    if (GetNextLexem().LexemCode == 50)
+            if (TryNextLexem().LexemCode == 1)
+            {
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 30)
+                {
+                    GetNextLexem();
+                    if (TryNextLexem().LexemCode == 50)
+                    {
+                        GetNextLexem();
+                        if (TryNextLexem().LexemCode == 31)
+                        {
+                            GetNextLexem();
+                            if (TryNextLexem().LexemCode == 26)
+                            {
+                                GetNextLexem();
+                                if (TryNextLexem().LexemCode == 31)
+                                {
+                                    GetNextLexem();
+                                    SkipEnters();
+                                    if (IsElemList())
+                                    {
+                                        SkipEnters();
+                                        if (TryNextLexem().LexemCode == 27)
+                                        {
+                                            GetNextLexem();
 
-                        if (GetNextLexem().LexemCode == 31)
-                            if (GetNextLexem().LexemCode == 26)
-                                if (GetNextLexem().LexemCode == 31)
-                                    if (IsElemList(out c, out text))
-                                    { }
+                                            if (TryNextLexem().LexemCode == -1)
+                                            {
+                                                return true;////////////////
+                                            }
+                                            else
+                                            {
+                                                throw new Exceptions.MyException("Error! After the last scope can't be any text  Line:" + CurrentLexem.RowNumber.ToString());
+                                            }
+                                        }
+                                        else
+                                        {
+                                            System.Diagnostics.Debug.WriteLine(TryNextLexem().LexemCode);
+                                            throw new Exceptions.MyException("Error! make sure you closed the scope  Line:" + CurrentLexem.RowNumber);
+                                        }
+                                    }
+
                                     else
                                     {
-                                        return false;
+                                        throw new Exceptions.MyException("Error! Elem List expected Line:" + CurrentLexem.RowNumber);
                                     }
+                                }
                                 else
                                 {
-                                    c = 2;
-                                    text = "make sure you made new line";
-                                    return false;
+
+                                    throw new Exceptions.MyException("Error! make sure you made new line Line:2");
                                 }
+                            }
                             else
                             {
-                                c = 2;
-                                text = "\"/\" expected";
-                                return false;
+
+                                throw new Exceptions.MyException("Error! \"/\" expected Line:2");
                             }
+                        }
                         else
                         {
-                            c = 1;
-                            text = "make sure you made new line";
-                            return false;
+
+                            throw new Exceptions.MyException("Error! make sure you made new line Line:1");
                         }
+                    }
                     else
                     {
-                        c = 1;
-                        text = "program name expected";
-                        return false;
-                    }
 
+                        throw new Exceptions.MyException("Error! program name expected  Line:1");
+                    }
+                }
                 else
                 {
-                    c = 1;
-                    text = "\":\" expected";
-                    return false;
+
+                    throw new Exceptions.MyException("Error! \":\" expected  Line:1");
                 }
-
+            }
             else
             {
-                c = 1;
-                text = "\"init\" expected";
-                return false;
+
+                throw new Exceptions.MyException("Error! init expected  Line:1");
 
             }
-            c = 0;
-            text = "Success";
+
             return true;
 
         }
-
-        private bool IsElemList(out int c, out string text)
+        private void SkipEnters()
         {
-            IsElem(out c, out text);
-           System.Diagnostics.Debug.WriteLine(GetNextLexem().LexemCode);
-            if (IsElem(out c, out text))
-            {
-                
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else return false;
-
+            while (TryNextLexem().LexemCode == 31)
+                GetNextLexem();
         }
-
-        private bool IsElem(out int c, out string text)
+        private bool IsElemList()
         {
+            if (TryNextLexem().LexemCode == 26)
+            {
+                GetNextLexem();
 
-            if ( IsLabel(out c, out text)||IsOgol(out  c, out  text) || IsOper(out c, out text) )
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else return false;
-        }
-
-        private bool IsLabel(out int c, out string text)
-        {
-
-            SavePos();
-            if (GetNextLexem().type == 3 && GetNextLexem().LexemCode == 30)
-            {
-
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                LoadLastPos();
-                c = CurrentLexem.RowNumber;
-                text = "label expected";
-                return false;
-            };
-        }
-
-
-        private bool IsOper(out int c, out string text)
-        {
-            
-            if (IsPrysv(out c, out text) || IsInput(out c, out text) || IsOutput(out c, out text) || IsGoto(out c, out text)||IsCondition(out c,out text))
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                
-               // c = CurrentLexem.RowNumber;
-                //text = "Wrong syntaxis";
-               
-                return false;
-            };
-        }
-
-        private bool IsGoto(out int c, out string text)
-        {
-            SavePos();
-            if (GetNextLexem().LexemCode == 12 && GetNextLexem().type == 5)
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                c = CurrentLexem.RowNumber;
-                text = "Variable name expected";
-                LoadLastPos();
-                return false;
-            };
-        }
-
-        private bool IsPrysv(out int c, out string text)
-        {
-            SavePos();
-            if (GetNextLexem().LexemCode == 50 && GetNextLexem().LexemCode == 13&&IsArythm(out  c, out  text))
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                c = CurrentLexem.RowNumber;
-                text = "Make sure you use syntaxis x=t";
-                LoadLastPos();
-                return false;
-            };
-        }
-
-        private bool IsArythm(out int c, out string text)
-        {
-            c = 0;
-            text = "Success";
-            return true;
-        }
-
-        private bool IsOutput(out int c, out string text)
-        {
-            SavePos();
-           
-            if (GetNextLexem().LexemCode == 4 && GetNextLexem().LexemCode==28&&IsSpysId(out c, out text) && GetNextLexem().LexemCode==29)
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                c = CurrentLexem.RowNumber;
-                text = "Make sure you use syntaxis scan(a,..h)";
-                LoadLastPos();
-                return false;
-            };
-        }
-
-        private bool IsInput(out int c, out string text)
-        {
-            SavePos();
-
-            if (GetNextLexem().LexemCode == 5 && GetNextLexem().LexemCode == 28 && IsSpysId(out c, out text) && GetNextLexem().LexemCode == 29)
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                c = CurrentLexem.RowNumber;
-                text = "Make sure you use syntaxis scan(a,..h)";
-                LoadLastPos();
-                return false;
-            };
-        }
-        private bool IsCondition(out int c, out string text)
-        {
-            SavePos();
-
-            if (GetNextLexem().LexemCode == 8 && GetNextLexem().LexemCode == 28 && IsLogic(out c, out text) && GetNextLexem().LexemCode == 29&&
-                GetNextLexem().LexemCode == 9&&GetNextLexem().LexemCode==31&&IsElem(out c,out text)&&
-                GetNextLexem().LexemCode == 10&&GetNextLexem().LexemCode==31&&IsElem(out c,out text)&&GetNextLexem().LexemNumber==11)
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                c = CurrentLexem.RowNumber;
-                text = "Make sure you use syntaxis if";
-                LoadLastPos();
-                return false;
-            };
-        }
-
-        private bool IsLogic(out int c, out string text)
-        {
-            c = 0;
-            text = "Success";
-            return true;
-        }
-
-        private bool IsOgol(out int c, out string text)
-        {
-            c = CurrentLexem.RowNumber;
-            text = "Variables expected";
-            SavePos();
-            if ((GetNextLexem().LexemCode == 2 || CurrentLexem.LexemCode == 3) && IsSpysId(out c, out text))
-            {
-                c = 0;
-                text = "Success";
-                return true;
-            }
-            else
-            {
-                LoadLastPos();
-               
-                return false;
-            };
-        }
-
-        private bool IsSpysId(out int c, out string text)
-        {
-
-            if (GetNextLexem().LexemCode == 50)
-            {
-                while (TryNextLexem().LexemCode ==32)
+                if (TryNextLexem().LexemCode == 31)
                 {
-                
-                    if (!(GetNextLexem().LexemCode == 32 && GetNextLexem().LexemCode == 50))
-
+                    GetNextLexem();
+                    SkipEnters();
+                    if (IsElemList())
                     {
-                        c = CurrentLexem.RowNumber;
-                        text = "Variable name expected";
-                        return false;
+                        SkipEnters();
+                        if (TryNextLexem().LexemCode == 27)
+                        {
+                            GetNextLexem();
+                            //SkipEnters();
+                            return true;
+                        }
+                        else
+                        {
+                            throw new Exceptions.MyException("Error! make sure you closed the scope  Line:" + CurrentLexem.RowNumber);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exceptions.MyException("Error! Elem list expected  Line:" + CurrentLexem.RowNumber);
                     }
                 }
-                c = 0;
-                text = "Success";
+                else
+                {
+                    throw new Exceptions.MyException("Error! make sure you made new line  Line:" + CurrentLexem.RowNumber);
+                }
+            }
+            else
+                if (IsElem())
+                {
+                    if (TryNextLexem().LexemCode == 31)
+                    {
+                        GetNextLexem();
+                        SkipEnters();
+                        if (IsElemList())
+                        {
+
+                            return true;
+                        }
+                        else
+                        {
+
+                            return true;
+                        }
+                    }
+                    else throw new Exceptions.MyException("Error! make sure you made new line  Line:" + CurrentLexem.RowNumber);
+                }
+                else
+                {
+                    return true;
+                }
+        }
+
+
+
+        private bool IsElem()
+        {
+
+
+            if (IsLabel() || IsOgol() || IsOper())
+            {
+                return true;
+            }
+            else return false;
+        }
+
+        private bool IsLabel()
+        {
+
+
+            if (TryNextLexem().type == 3)
+            {
+                GetNextLexem();
+
+                if (TryNextLexem().LexemCode == 30)
+                {
+                    GetNextLexem();
+                    return true;
+                }
+                else
+                {
+                    throw new Exceptions.MyException("Error! Make sure you used syntaxis: label's name : Line:" + CurrentLexem.RowNumber);
+                }
+
+            }
+            else return false;
+
+        }
+
+
+        private bool IsOper()
+        {
+
+            if (IsPrysv() || IsOutput() || IsInput() || IsGoto() || IsCondition() || isLoop())
+            {
+
                 return true;
             }
             else
             {
-                c = CurrentLexem.RowNumber;
-                text = "Variable name expected";
                 return false;
+            };
+        }
+
+        private bool IsGoto()
+        {
+
+            if (TryNextLexem().LexemCode == 12)
+            {
+                GetNextLexem();
+                if (TryNextLexem().type == 5)
+                {
+                    GetNextLexem();
+                    return true;
+                }
+                else
+                {
+                    throw new Exceptions.MyException("Error! Make sure you used syntaxis: goto label Line:" + CurrentLexem.RowNumber);
+                };
 
             }
+            return false;
+        }
 
+        private bool IsPrysv()
+        {
+
+            if (TryNextLexem().LexemCode == 50)
+            {
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 13)
+                {
+                    GetNextLexem();
+                    if (IsArythm())
+                        return true;
+                    else throw new Exceptions.MyException("Error! arythm expression expected Line:" + CurrentLexem.RowNumber);
+                }
+                else throw new Exceptions.MyException("Error! Make sure you used syntaxis: variable=arythm exp. Line:" + CurrentLexem.RowNumber);
+            }
+            return false;
+
+        }
+
+        private bool IsArythm()
+        {
+            if (TryNextLexem().LexemCode == 24)
+            {
+                GetNextLexem();
+                if (IsArythm())
+                    return true;
+                else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+            }
+            else
+            {
+                if (IsDodanok())//dodanok
+                {
+                    if (TryNextLexem().LexemCode == 23 || TryNextLexem().LexemCode == 24)
+                    {
+                        GetNextLexem();
+                        if (IsArythm())
+                            return true;
+                        else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+                    }
+                    else return true;
+                }
+                else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+            }
+
+        }
+
+        private bool IsDodanok()
+        {
+            if (IsMnog())
+            {
+                if (TryNextLexem().LexemCode == 25 || TryNextLexem().LexemCode == 26)
+                {
+                    GetNextLexem();
+                    if (IsDodanok())
+                        return true;
+                    else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+                }
+                else return true;
+            }
+            else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+        }
+
+        private bool IsMnog()
+        {
+            if (TryNextLexem().LexemCode == 50 || TryNextLexem().LexemCode == 51)
+            {
+                GetNextLexem();
+                return true;
+            }
+            else
+            {
+                if (TryNextLexem().LexemCode == 28)
+                {
+                    GetNextLexem();
+                    if (IsArythm())
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            return true;
+                        }
+                        else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+                    }
+                    else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+
+                }
+                else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+
+            }
+        }
+
+        private bool IsOutput()
+        {
+            //  SavePos();
+
+            if (TryNextLexem().LexemCode == 4)
+            {
+
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 28)
+                {
+                    GetNextLexem();
+                    if (IsArythm())
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            return true;
+                        }
+                        else
+                        {
+                            throw new Exceptions.MyException("Error! Right scope expected Line:" + CurrentLexem.RowNumber);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exceptions.MyException("Error! Id list expected Line:" + CurrentLexem.RowNumber);
+                    }
+
+
+                }
+                else
+                {
+                    throw new Exceptions.MyException("Error! Left scope expected Line:" + CurrentLexem.RowNumber);
+                }
+            }
+            else
+            {
+                return false;
+            };
+        }
+
+        private bool IsInput()
+        {
+            if (TryNextLexem().LexemCode == 5)
+            {
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 28)
+                {
+                    GetNextLexem();
+                    if (IsSpysId())
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            return true;
+                        }
+                        else
+                        {
+                            throw new Exceptions.MyException("Error! identificator's or right scope expected Line:" + CurrentLexem.RowNumber);
+                        }
+                    }
+                    else
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            return true;
+                        }
+                        else
+                        {
+                            throw new Exceptions.MyException("Error! identificator's or right scope expected Line:" + CurrentLexem.RowNumber);
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exceptions.MyException("Error! Left scope expected Line:" + CurrentLexem.RowNumber);
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        private bool isLoop()
+        {
+            if (TryNextLexem().LexemCode == 6)
+            {
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 28)
+                {
+                    GetNextLexem();
+                    if (IsLogic())
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            if (TryNextLexem().LexemCode == 7)
+                            {
+                                GetNextLexem();
+                                if (TryNextLexem().LexemCode == 31)
+                                {
+                                    GetNextLexem();
+                                    if (TryNextLexem().LexemCode != 26)
+                                    {
+                                        if (IsElem())
+                                            return true;
+                                        else throw new Exceptions.MyException("Error! elem list expected Line:" + CurrentLexem.RowNumber);
+                                    }
+                                    else
+                                        if (IsElemList())
+                                        {
+                                            return true;
+                                        }
+                                        else throw new Exceptions.MyException("Error! elem list expected Line:" + CurrentLexem.RowNumber);
+                                }
+                                else throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
+                            }
+                            else throw new Exceptions.MyException("Error! do expected Line:" + CurrentLexem.RowNumber);
+                        }
+                        else throw new Exceptions.MyException("Error! right scope expected Line:" + CurrentLexem.RowNumber);
+                    }
+                    else throw new Exceptions.MyException("Error! logic exp expected Line:" + CurrentLexem.RowNumber);
+                }
+                else throw new Exceptions.MyException("Error! Left scope expected Line:" + CurrentLexem.RowNumber);
+            }
+            else
+                return false;
+        }
+        private bool IsCondition()
+        {
+
+            if (TryNextLexem().LexemCode == 8)
+            {
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 28)
+                {
+                    GetNextLexem();
+                    if (IsLogic())
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            if (TryNextLexem().LexemCode == 9)
+                            {
+                                GetNextLexem();
+                                if (TryNextLexem().LexemCode == 31)
+                                {
+                                    GetNextLexem();
+                                    if (IsElemList())
+                                    {
+                                        SkipEnters();
+                                        if (TryNextLexem().LexemCode == 10)
+                                        {
+                                            GetNextLexem();
+                                            if (TryNextLexem().LexemCode == 31)
+                                            {
+                                                GetNextLexem();
+                                                if (IsElemList())
+                                                {
+                                                    SkipEnters();
+                                                    if (TryNextLexem().LexemCode == 11)
+                                                    {
+                                                        GetNextLexem();
+                                                        return true;
+
+                                                    }
+                                                    else
+                                                        throw new Exceptions.MyException("Error! endif expected Line:" + CurrentLexem.RowNumber);
+                                                }
+                                                else
+                                                    throw new Exceptions.MyException("Error! wrong elem list Line:" + CurrentLexem.RowNumber);
+                                            }
+                                            else throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
+                                        }
+                                        else
+                                            throw new Exceptions.MyException("Error! else expected Line:" + CurrentLexem.RowNumber);
+                                    }
+                                    else
+                                        throw new Exceptions.MyException("Error! wrong elem list Line:" + CurrentLexem.RowNumber);
+                                }
+                                else
+                                    throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
+                            }
+                            else
+                                throw new Exceptions.MyException("Error! then expected Line:" + CurrentLexem.RowNumber);
+                        }
+                        else throw new Exceptions.MyException("Error! right scope expected Line:" + CurrentLexem.RowNumber);
+                    }
+                    else
+                        throw new Exceptions.MyException("Error! logic exp expected Line:" + CurrentLexem.RowNumber);
+                }
+                else
+                    throw new Exceptions.MyException("Error! Left scope expected Line:" + CurrentLexem.RowNumber);
+            }
+            else
+                return false;
+        }
+
+        private bool IsLogic()
+        {
+
+            if (IsLogDodanok())//dodanok
+            {
+                if (TryNextLexem().LexemCode == 21)
+                {
+                    GetNextLexem();
+                    if (IsLogic())
+                        return true;
+                    else throw new Exceptions.MyException("Error! wrong logic expression Line:" + CurrentLexem.RowNumber);
+                }
+                else return true;
+            }
+            else throw new Exceptions.MyException("Error! wrong logic expression Line:" + CurrentLexem.RowNumber);
+
+
+        }
+
+        private bool IsLogDodanok()
+        {
+            if (IsLogMnog())
+            {
+                if (TryNextLexem().LexemCode == 20)
+                {
+                    GetNextLexem();
+                    if (IsLogDodanok())
+                        return true;
+                    else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+                }
+                else return true;
+            }
+            else throw new Exceptions.MyException("Error! wrong arytmetical expression Line:" + CurrentLexem.RowNumber);
+        }
+
+        private bool IsLogMnog()
+        {
+
+
+
+            if (TryNextLexem().LexemCode == 22)
+            {
+
+                GetNextLexem();
+                if (IsLogMnog())
+                    return true;
+                else
+                {
+                    throw new Exceptions.MyException("Error! wrong logical expression Line:" + CurrentLexem.RowNumber);
+                }
+            }
+            else
+            {
+                if (TryNextLexem().LexemCode == 28)
+                {
+                    GetNextLexem();
+                    if (IsLogic())
+                    {
+                        if (TryNextLexem().LexemCode == 29)
+                        {
+                            GetNextLexem();
+                            return true;
+                        }
+                        else throw new Exceptions.MyException("Error! wrong logical expression Line:" + CurrentLexem.RowNumber);
+                    }
+                    else throw new Exceptions.MyException("Error! wrong logical expression Line:" + CurrentLexem.RowNumber);
+
+                }
+                else
+                    if (IsArythm())
+                    {
+                        if (isLogSign())
+                        {
+                            if (IsArythm())
+                            {
+                                return true;
+                            }
+                            else
+                                throw new Exceptions.MyException("Error! wrong arythm exp in log exp Line:" + CurrentLexem.RowNumber);
+                        }
+                        else
+                            throw new Exceptions.MyException("Error! wrong logical sign Line:" + CurrentLexem.RowNumber);
+
+                    }
+                    else throw new Exceptions.MyException("Error! wrong logical expression Line:" + CurrentLexem.RowNumber);
+
+            }
+        }
+
+        private bool isLogSign()
+        {
+            if (TryNextLexem().LexemCode <= 19 && TryNextLexem().LexemCode >= 14)
+            {
+                GetNextLexem();
+                return true;
+            }
+            return false;
+        }
+        private bool IsOgol()
+        {
+
+            if ((TryNextLexem().LexemCode == 2 || TryNextLexem().LexemCode == 3))
+            {
+                GetNextLexem();
+                if (IsSpysId())
+                {
+                    return true;
+                }
+                else
+                {
+                    throw new Exceptions.MyException("Error! Identificator list expected Line:" + CurrentLexem.RowNumber);
+                }
+            }
+            else
+            {
+                return false;
+            };
+        }
+
+        private bool IsSpysId()
+        {
+
+            if (TryNextLexem().LexemCode == 50&&TryNextLexem().type!=4)
+            {
+                GetNextLexem();
+                if (TryNextLexem().LexemCode == 32)
+                {
+                    GetNextLexem();
+                    if (!IsSpysId())
+                    {
+                        throw new Exceptions.MyException("Error! Variable expected Line:" + CurrentLexem.RowNumber);
+                    }
+                }
+                else
+                {
+                    return true;
+                };
+            }
+
+            else
+            {
+                throw new Exceptions.MyException("Error! Variable expected Line:" + CurrentLexem.RowNumber);
+            }
+            return true;
         }
 
     }

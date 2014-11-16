@@ -12,6 +12,7 @@ using System.IO;
 
 namespace Skaner
 {
+
     public class myform : Form
     {
         private Button button1;
@@ -127,13 +128,18 @@ namespace Skaner
         {
             File.WriteAllText(path, textBox11.Text, Encoding.Default);
         }
-        bool Validate(LexemsTable tableform, out int c, out string text)
+        bool Validate(LexemsTable tableform)
         {
-            c = 0; text = "";
             for (int i = 0; i < MainItems.LongCount(); i++)
             {
 
-                if (MainItems[i].LexemCode == -1) { c = MainItems[i].RowNumber; text = "Undefined lexem"; return false; }
+                if (MainItems[i].LexemCode == -1)
+                {
+                    /*c = MainItems[i].RowNumber;
+                    text = "Undefined lexem";
+                    return false;*/
+                    throw new Exceptions.MyException(("Error! Undefined lexem Line:" + MainItems[i].RowNumber));
+                }
                 if (MainItems[i].LexemCode == 50)
                 {
 
@@ -142,8 +148,13 @@ namespace Skaner
                     {
                         if (MainItems[i].LexemName.Equals(IdItems[j].LexemName))
                         {
-                            if (MainItems[i].type.Equals(IdItems[j].type))
-                            { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }
+                            if (MainItems[i].type.Equals(IdItems[j].type)||(MainItems[i].type!=0))
+                            {
+                                /*c = MainItems[i].RowNumber;
+                                text = "Variables are the same";
+                                return false;*/
+                                throw new Exceptions.MyException(("Error! Variables are the same Line:" + MainItems[i].RowNumber));
+                            }
                             MainItems[i].IdConstCode = IdItems[j].IdConstCode;
                             MainItems[i].type = IdItems[j].type;
                             notfound = false;
@@ -166,7 +177,12 @@ namespace Skaner
                     }
                     if (MainItems[i].type == 5) GotoItems.Add(MainItems[i]);
                     if (MainItems[i].type == 0)
-                    { c = MainItems[i].RowNumber; text = "Undefined variable"; return false; }
+                    {
+                        /* c = MainItems[i].RowNumber;
+                         text = "Undefined variable";
+                         return false;*/
+                        throw new Exceptions.MyException(("Error! Undefined variable Line:" + MainItems[i].RowNumber));
+                    }
                 }
                 else
                     MainItems[i].type = 0;//Убираем тип с запятых и т.д.
@@ -206,12 +222,8 @@ namespace Skaner
                           return true;
                       }
                   }*/
-            Lexems t;
-            if (CheckingLabels(out t, out text))
-            {
-                { c = t.RowNumber; return false; }
-            };
-            /*  */
+            CheckingLabels();
+
             foreach (Lexems g in IdItems)
             {
                 string type = "";
@@ -227,31 +239,25 @@ namespace Skaner
 
             return true;
         }
-        bool CheckingLabels(out Lexems t, out string text)
+        bool CheckingLabels()
         {
             for (int i = 0; i < GotoItems.LongCount(); i++)
                 for (int j = i + 1; j < GotoItems.LongCount(); j++)
                 {
                     if (GotoItems[i].LexemName == GotoItems[j].LexemName)
                     {
-                        t = GotoItems[j];
-                        text = "The same label";
-                        return true;
+                        throw new Exceptions.MyException(("Error! Duplicate name of the label Line:" + GotoItems[j].RowNumber));
                     }
                 }
 
             if (GotoItems.LongCount() != LabelItems.LongCount())
                 if (GotoItems.LongCount() > LabelItems.LongCount())
                 {
-                    t = GotoItems[0];
-                    text = "Label's not found";
-                    return true;
+                    throw new Exceptions.MyException(("Error! Label's not found. Line:" + GotoItems[0].RowNumber));
                 }
                 else
                 {
-                    t = LabelItems[0];
-                    text = "goto is not found";
-                    return true;
+                    throw new Exceptions.MyException(("Error! goto isn't found. Line:" + LabelItems[0].RowNumber));
                 }
             for (int i = 0; i < GotoItems.LongCount(); i++)
             {
@@ -265,12 +271,10 @@ namespace Skaner
             }
             if (LabelItems.LongCount() > 0)
             {
-                t = LabelItems[0];
-                text = "goto is not found";
-                return true;
+
+                throw new Exceptions.MyException(("Error goto isn't found. Line:" + LabelItems[0].RowNumber));
             }
-            t = null;
-            text = "";
+
             return false;
         }
 
@@ -280,12 +284,15 @@ namespace Skaner
 
         }
 
-        void displa_error_message(int c, string text)
+        void displa_error_message(Exceptions.MyException ex)
         {
-            textBox11.Select(find_line_position(c - 1) + 1, find_line_position(c) - find_line_position(c - 1) - 2);//-2 and +1 to avoid catching special symbols
+            int row;
+            int.TryParse(ex.Message.Substring(ex.Message.LastIndexOf(":")+1), out row);
+            textBox11.Select(find_line_position(row - 1) + 1, find_line_position(row) - find_line_position(row - 1) - 2);//-2 and +1 to avoid catching special symbols
             textBox11.Focus();
+            MessageBox.Show(ex.Message);
             // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
-            MessageBox.Show("Error!  " + text + "  line: " + c);
+          //  MessageBox.Show("Error!  " + text + "  line: " + c);
         }
         void start_lexem_determination()
         {
@@ -302,24 +309,21 @@ namespace Skaner
             LexFind ob = new LexFind(str);
             while (ob.can_read())
                 MainItems.Add(ob.NextLex());
-            int c; string text = "";
-            if (Validate(tableform, out c, out text))
+            try
             {
-               // tableform.Show();
+                Validate(tableform);
+                Parser.Parser parsobj = new Parser.Parser(MainItems);
+                parsobj.check();
+                MessageBox.Show("allright!");
             }
-            else
+            catch (Exceptions.MyException ex)
             {
-                displa_error_message(c, text);
-            };
-            str.Close();
-            Parser.Parser parsobj = new Parser.Parser(MainItems);
-            if (parsobj.check(out c, out text))
-            {
-                MessageBox.Show(text);
+                displa_error_message(ex);
+              
             }
-            else
+            finally
             {
-                displa_error_message(c, text);
+                str.Close();
             }
         }
 

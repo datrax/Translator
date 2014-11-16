@@ -4,7 +4,6 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Sa
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.csprojResolveAssemblyReference.cache
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.Form1.resources
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.LexemsTable.resources
-C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.myform.resources
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.Properties.Resources.resources
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.csproj.GenerateResource.Cache
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.exe
@@ -13,3 +12,6 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Le
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Parser.dll
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Lexems.pdb
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Parser.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.myform.resources
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Exceptions.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Exceptions.pdb

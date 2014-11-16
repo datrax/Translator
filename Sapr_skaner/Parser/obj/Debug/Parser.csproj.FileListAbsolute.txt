@@ -5,3 +5,5 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Parser\obj\Debug\Parser.
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Parser\obj\Debug\Parser.csprojResolveAssemblyReference.cache
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Parser\bin\Debug\Lexems.dll
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Parser\bin\Debug\Lexems.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Parser\bin\Debug\Exceptions.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Parser\bin\Debug\Exceptions.pdb

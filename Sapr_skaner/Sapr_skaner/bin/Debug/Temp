@@ -1,7 +1,8 @@
 init:program1
 /
 int a,b
- if () then
+ if (a<b) then
+  goto exit
   else
    print(a)
   endif
@@ -10,7 +11,6 @@ b=3
 while (a>b) do
 /
  a=a-1
-
 \
-
+exit:
 \

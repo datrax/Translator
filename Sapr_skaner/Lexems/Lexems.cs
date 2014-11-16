@@ -8,6 +8,15 @@ namespace Skaner
 {
     public class Lexems
     {
+        public Lexems()
+        {
+            RowNumber = 0;
+            LexemNumber = 0;
+            LexemName = "";
+            LexemCode = 0;
+            IdConstCode = 0;
+            type = 0;
+        }
         public Lexems(int a,int b,string c,int d,int e,int f){
             RowNumber = b;
             LexemNumber = a;
