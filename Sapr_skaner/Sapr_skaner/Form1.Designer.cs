@@ -71,7 +71,6 @@
             this.FilePath.Name = "FilePath";
             this.FilePath.Size = new System.Drawing.Size(228, 20);
             this.FilePath.TabIndex = 3;
-            this.FilePath.Text = "C:\\Users\\datrax\\Desktop\\Новый текстовый документ.dt";
             // 
             // button2
             // 

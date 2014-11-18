@@ -13,10 +13,14 @@ namespace Parser
         List<Skaner.Lexems> Lexems;
         Skaner.Lexems CurrentLexem;
         int count;
+        Stack<int> States=new Stack<int>();
+        int StateFlag;//0-common 1-then 2-else 
         public Parser(List<Skaner.Lexems> Lexems)
         {
             this.Lexems = new List<Skaner.Lexems>(Lexems);
             count = 0;
+            StateFlag = 0;
+            
         }
         public Parser(Parser t)
         {
@@ -31,7 +35,7 @@ namespace Parser
                 t.Add(CurrentLexem);
             return t;
         }
-        
+
 
         Skaner.Lexems TryNextLexem()
         {
@@ -147,6 +151,47 @@ namespace Parser
         }
         private bool IsElemList()
         {
+
+            if (IsElem())
+            {
+                if (TryNextLexem().LexemCode == 31)
+                {
+                    GetNextLexem();
+                    SkipEnters();
+                    if (IsElemList())
+                    {
+
+                        return true;
+                    }
+                    else
+                    {
+
+                        return true;
+                    }
+                }
+                else throw new Exceptions.MyException("Error! make sure you made new line  Line:" + CurrentLexem.RowNumber);
+            }
+            else
+            {
+                if (TryNextLexem().LexemCode == 10 && StateFlag == 1)
+                    return true;
+                else
+                    if (TryNextLexem().LexemCode == 11 && StateFlag == 2)
+                        return true;
+                    else
+                        if (TryNextLexem().LexemCode == 27)
+                            return true;
+                        else
+                            if (TryNextLexem().LexemCode == -1)
+                                return true;
+                        else throw new Exceptions.MyException("Wrong operator Line:" + (CurrentLexem.RowNumber + 1).ToString());
+            }
+        }
+
+
+
+        private bool IsElem()
+        {
             if (TryNextLexem().LexemCode == 26)
             {
                 GetNextLexem();
@@ -180,42 +225,12 @@ namespace Parser
                 }
             }
             else
-                if (IsElem())
-                {
-                    if (TryNextLexem().LexemCode == 31)
-                    {
-                        GetNextLexem();
-                        SkipEnters();
-                        if (IsElemList())
-                        {
 
-                            return true;
-                        }
-                        else
-                        {
-
-                            return true;
-                        }
-                    }
-                    else throw new Exceptions.MyException("Error! make sure you made new line  Line:" + CurrentLexem.RowNumber);
-                }
-                else
+                if (IsLabel() || IsOgol() || IsOper())
                 {
                     return true;
                 }
-        }
-
-
-
-        private bool IsElem()
-        {
-
-
-            if (IsLabel() || IsOgol() || IsOper())
-            {
-                return true;
-            }
-            else return false;
+                else return false;
         }
 
         private bool IsLabel()
@@ -306,7 +321,7 @@ namespace Parser
             }
             else
             {
-                if (IsDodanok())//dodanok
+                if (IsDodanok())
                 {
                     if (TryNextLexem().LexemCode == 23 || TryNextLexem().LexemCode == 24)
                     {
@@ -369,7 +384,6 @@ namespace Parser
 
         private bool IsOutput()
         {
-            //  SavePos();
 
             if (TryNextLexem().LexemCode == 4)
             {
@@ -471,19 +485,16 @@ namespace Parser
                                 if (TryNextLexem().LexemCode == 31)
                                 {
                                     GetNextLexem();
-                                    if (TryNextLexem().LexemCode != 26)
-                                    {
-                                        if (IsElem())
-                                            return true;
-                                        else throw new Exceptions.MyException("Error! elem list expected Line:" + CurrentLexem.RowNumber);
-                                    }
+
+                                    if (IsElem())
+                                        return true;
                                     else
-                                        if (IsElemList())
-                                        {
-                                            return true;
-                                        }
-                                        else throw new Exceptions.MyException("Error! elem list expected Line:" + CurrentLexem.RowNumber);
+                                    {
+                                        GetNextLexem();
+                                        throw new Exceptions.MyException("Error! Wrong operator after while,operator is expected Line:" + CurrentLexem.RowNumber);
+                                    }
                                 }
+
                                 else throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
                             }
                             else throw new Exceptions.MyException("Error! do expected Line:" + CurrentLexem.RowNumber);
@@ -499,7 +510,7 @@ namespace Parser
         }
         private bool IsCondition()
         {
-
+            States.Push(StateFlag);   
             if (TryNextLexem().LexemCode == 8)
             {
                 GetNextLexem();
@@ -517,21 +528,29 @@ namespace Parser
                                 if (TryNextLexem().LexemCode == 31)
                                 {
                                     GetNextLexem();
+                                    StateFlag = 1;
+                                    SkipEnters();
                                     if (IsElemList())
                                     {
+                                        
                                         SkipEnters();
                                         if (TryNextLexem().LexemCode == 10)
                                         {
                                             GetNextLexem();
+
                                             if (TryNextLexem().LexemCode == 31)
                                             {
                                                 GetNextLexem();
+                                                StateFlag = 2;
+                                                SkipEnters();
                                                 if (IsElemList())
                                                 {
                                                     SkipEnters();
+                                                    
                                                     if (TryNextLexem().LexemCode == 11)
                                                     {
                                                         GetNextLexem();
+                                                        StateFlag = States.Pop();
                                                         return true;
 
                                                     }
@@ -563,8 +582,12 @@ namespace Parser
                 else
                     throw new Exceptions.MyException("Error! Left scope expected Line:" + CurrentLexem.RowNumber);
             }
-            else
+            else {
+                States.Pop();
                 return false;
+            }
+             
+           
         }
 
         private bool IsLogic()
@@ -689,7 +712,7 @@ namespace Parser
         private bool IsSpysId()
         {
 
-            if (TryNextLexem().LexemCode == 50&&TryNextLexem().type!=4)
+            if (TryNextLexem().LexemCode == 50 && TryNextLexem().type != 4)
             {
                 GetNextLexem();
                 if (TryNextLexem().LexemCode == 32)
