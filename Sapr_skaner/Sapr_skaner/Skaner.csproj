@@ -47,11 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Fileloader.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Fileloader.Designer.cs">
+      <DependentUpon>Fileloader.cs</DependentUpon>
     </Compile>
     <Compile Include="LexFind.cs" />
     <Compile Include="LexemsTable.cs">
@@ -65,8 +65,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Fileloader.resx">
+      <DependentUpon>Fileloader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LexemsTable.resx">
       <DependentUpon>LexemsTable.cs</DependentUpon>
@@ -98,6 +98,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AscendingParser\AscendingParser.csproj">
+      <Project>{aa56b02b-0d9f-4a02-bda9-6dd4c21be168}</Project>
+      <Name>AscendingParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoParser\AutoParser.csproj">
+      <Project>{eb82d637-fd94-4414-ac5d-c7a24db53c32}</Project>
+      <Name>AutoParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Exceptions\Exceptions.csproj">
       <Project>{bffb3bf6-2a7e-4949-a296-e9b3df82fb77}</Project>
       <Name>Exceptions</Name>

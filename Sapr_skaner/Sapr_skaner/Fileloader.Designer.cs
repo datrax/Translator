@@ -1,6 +1,6 @@
 ﻿namespace Skaner
 {
-    partial class Form1
+    partial class Fileloader
     {
         /// <summary>
         /// Required designer variable.
@@ -71,6 +71,8 @@
             this.FilePath.Name = "FilePath";
             this.FilePath.Size = new System.Drawing.Size(228, 20);
             this.FilePath.TabIndex = 3;
+            this.FilePath.Text = "C:\\Users\\datrax\\Documents\\GitHub\\Translator\\Новый текстовый документ1.dt";
+            this.FilePath.TextChanged += new System.EventHandler(this.FilePath_TextChanged);
             // 
             // button2
             // 
@@ -82,7 +84,7 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form1
+            // Fileloader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -94,7 +96,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "Fileloader";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

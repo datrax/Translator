@@ -90,7 +90,7 @@ namespace Skaner
             // 
             // myform
             // 
-            this.ClientSize = new System.Drawing.Size(665, 497);
+            this.ClientSize = new System.Drawing.Size(664, 497);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -312,9 +312,22 @@ namespace Skaner
             try
             {
                 Validate(tableform);
-                Parser.Parser parsobj = new Parser.Parser(MainItems);
-                parsobj.check();
+                //Parser.Parser parsobj = new Parser.Parser(MainItems);
+                //parsobj.check();
+                //AutoParser.Parser parsobj = new AutoParser.Parser(MainItems);
+                //parsobj.check();
+                //parsobj.Table();
+
+                AscendingParser.StackOutput stackoutput = new AscendingParser.StackOutput(MainItems);
+            
+                AscendingParser.Parser parser = new AscendingParser.Parser(MainItems);
+                parser.datagrid = stackoutput.dataGridView1;
+                stackoutput.Show();
+                parser.check();
+               
+                
                 MessageBox.Show("allright!");
+
             }
             catch (Exceptions.MyException ex)
             {

@@ -2,3 +2,4 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Lexems\bin\Debug\Lexems.
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Lexems\bin\Debug\Lexems.pdb
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Lexems\obj\Debug\Lexems.dll
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Lexems\obj\Debug\Lexems.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Lexems\obj\Debug\Lexems.csprojResolveAssemblyReference.cache

@@ -1,0 +1,9 @@
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\bin\Debug\AutoParser.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\bin\Debug\AutoParser.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\bin\Debug\Exceptions.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\bin\Debug\Lexems.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\bin\Debug\Exceptions.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\bin\Debug\Lexems.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\obj\Debug\AutoParser.csprojResolveAssemblyReference.cache
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\obj\Debug\AutoParser.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\AutoParser\obj\Debug\AutoParser.pdb

@@ -12,10 +12,10 @@ using System.IO;
 namespace Skaner
 {
     
-    public partial class Form1 : Form
+    public partial class Fileloader : Form
     {
         OpenFileDialog FileDialog;
-        public Form1()
+        public Fileloader()
         {
             InitializeComponent();
         }
@@ -57,6 +57,11 @@ namespace Skaner
                 form2.load_text(re, FilePath.Text);
                 re.Close();
             }
+        }
+
+        private void FilePath_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
