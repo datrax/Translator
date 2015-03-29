@@ -24,8 +24,8 @@ namespace Skaner
         List<string> TypeReal;
 
         StreamReader re;
-        char[] special_lex_collect = {'-','+','*','/','\\',':','(',')',',' };
-        string[] lex_collect = { "init", "int", "real", "print", "scan", "while", "do", "if", "then", "else", "endif", "goto", "=", "!=", "<=", ">=", "<", ">", "==", "AND", "OR", "NOT", "+", "-", "*", "/", "\\", "(", ")", ":", "¶", "," };
+        char[] special_lex_collect = {'-','+','*','/','/',':','(',')',',' ,'{','}'};
+        string[] lex_collect = { "init", "int", "real", "print", "scan", "while", "do", "if", "then", "else", "endif", "goto", "=", "!=", "<=", ">=", "<", ">", "==", "AND", "OR", "NOT", "+", "-", "*", "/", "/", "(", ")", ":", "¶", ",", "{", "}" };
 
         public LexFind()
         {

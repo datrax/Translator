@@ -118,6 +118,10 @@
       <Project>{e1f43a4f-f3aa-42b2-ad6f-563b56bf81cc}</Project>
       <Name>Parser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RPN\RPN.csproj">
+      <Project>{836493cc-b67b-429b-975a-953bf9f13bf2}</Project>
+      <Name>RPN</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

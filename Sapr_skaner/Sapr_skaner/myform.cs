@@ -25,6 +25,7 @@ namespace Skaner
         private List<Lexems> LabelItems;
 
         private TextBox textBox11;
+        private Button button4;
 
         string path;
         public myform()
@@ -44,6 +45,7 @@ namespace Skaner
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox11 = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -88,9 +90,20 @@ namespace Skaner
             this.textBox11.WordWrap = false;
             this.textBox11.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox11_KeyDown);
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(406, 460);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "ПОЛИЗ";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // myform
             // 
             this.ClientSize = new System.Drawing.Size(664, 497);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -312,22 +325,33 @@ namespace Skaner
             try
             {
                 Validate(tableform);
-                //Parser.Parser parsobj = new Parser.Parser(MainItems);
-                //parsobj.check();
-                //AutoParser.Parser parsobj = new AutoParser.Parser(MainItems);
-                //parsobj.check();
+              //  tableform.Show();//shows lexem table
+
+                dynamic parser = new AscendingParser.Parser(MainItems); 
+
+                //Parser.Parser parsobj = new Parser.Parser(MainItems);//Descending parser
                 //parsobj.Table();
-
-                AscendingParser.StackOutput stackoutput = new AscendingParser.StackOutput(MainItems);
-            
-                AscendingParser.Parser parser = new AscendingParser.Parser(MainItems);
-                parser.datagrid = stackoutput.dataGridView1;
-                stackoutput.Show();
-                parser.check();
                
-                
-                MessageBox.Show("allright!");
 
+                //AutoParser.Parser parsobj = new AutoParser.Parser(MainItems);//Auto parser
+               
+              
+           
+               
+               //AscendingParser.Parser parser = new AscendingParser.Parser(MainItems);
+                AscendingParser.StackOutput stackoutput = new AscendingParser.StackOutput(MainItems);
+                parser.datagrid = stackoutput.dataGridView1;
+                //stackoutput.Show();
+                
+         
+                parser.check();
+
+                //
+                RPN.PolishNotation polobj = new RPN.PolishNotation(MainItems);
+                polobj.build();
+                //
+
+                MessageBox.Show("allright!");
             }
             catch (Exceptions.MyException ex)
             {
@@ -343,6 +367,7 @@ namespace Skaner
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5) start_lexem_determination();
+            if (e.KeyCode == Keys.F6) button4_Click(null,null);
         }
         private int find_line_position(int row)
         {
@@ -359,6 +384,39 @@ namespace Skaner
             }
             str.Close();
             return count;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            IdItems.Clear();
+            ConstItems.Clear();
+            GotoItems.Clear();
+            LabelItems.Clear();
+            MainItems.Clear();
+            LexemsTable tableform = new LexemsTable();
+            StreamReader str;
+            File.WriteAllText("Temp", textBox11.Text, Encoding.Default);
+            str = File.OpenText("Temp");
+            LexFind ob = new LexFind(str);
+            while (ob.can_read())
+                MainItems.Add(ob.NextLex());
+            try
+            {
+                RPN.PolishNotation polobj = new RPN.PolishNotation(MainItems);
+
+                polobj.build();
+                MessageBox.Show("allright!");
+
+            }
+            catch (Exceptions.MyException ex)
+            {
+                displa_error_message(ex);
+
+            }
+            finally
+            {
+                str.Close();
+            }
         }
     }
 }

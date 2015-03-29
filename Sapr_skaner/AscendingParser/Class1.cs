@@ -50,12 +50,9 @@ namespace AscendingParser
         }
         public void check()
         {
-
-
             stack.Add("");
             while (true)
-            {
-                
+            {              
                 string Lex = "";
                 if (TryNextLexem().LexemCode == 50)
                     Lex = "id";
@@ -73,9 +70,7 @@ namespace AscendingParser
                 }
                 else
                 {
-
                     List<string> temp = stack.ToList();
-
                     string answer = "";
                     int j = 0;
                     for (int i = 0; i < stack.Count; i++)
@@ -97,7 +92,7 @@ namespace AscendingParser
                     if (answer != "")
                     {
                         stack.RemoveRange(j, stack.Count - (j));
-                        if (answer == "spys_id" && !(Lexems[count -2].LexemCode == 30)&& !(Lexems[count - 2].LexemCode == 32)&&!(Lexems[count -3].LexemCode==5))
+                        if (answer == "spys_id" && !(Lexems[count - 2].LexemCode == 30) && !(Lexems[count - 2].LexemCode == 32) && !(Lexems[count - 3].LexemCode == 5) && !(Lexems[count - 3].LexemCode == 4))
                             answer = "mnozh";
                         stack.Add("<" + answer + ">");
                     }
@@ -105,7 +100,6 @@ namespace AscendingParser
                     {
                         throw new Exceptions.MyException("Wrong  " +stack[stack.Count-1]+": "+ Lexems[count-1].RowNumber);
                     }
-
                 }                  
             }
         }
@@ -138,7 +132,6 @@ namespace AscendingParser
                     {
                         if (CompareStringArrays(temp.ToArray(), t[j])) return NotTerminals[i];
                     }
-
                 }
                 else
                 {
@@ -156,6 +149,7 @@ namespace AscendingParser
         }
         public string GetRelation(String Lex1, String Lex2)
         {
+          //  if (Lex1 == "NOT" || Lex2 == "NOT") throw new Exceptions.MyException("Wrong operator: " + Lexems[count].LexemName + " Line: " + Lexems[count].RowNumber);
             if (Lex1 == "") return "<";
             if (Lex2 == "") return ">";
             int i = 0, j = 0;
@@ -163,11 +157,11 @@ namespace AscendingParser
             {
                 if ((RelationTable[0, i].Value == null ? "" : RelationTable[0, i].Value.ToString()) == Lex1) break;
             };
-            for (; i < RelationTable.ColumnCount; j++)
+            for (; j < RelationTable.ColumnCount; j++)
             {
                 if ((RelationTable[j, 0].Value == null ? "" : RelationTable[j, 0].Value.ToString()) == Lex2) break;
             };
-            if (RelationTable[j, i].Value == null) throw new Exceptions.MyException("Wrong operator: " + Lexems[count].RowNumber);
+            if (RelationTable[j, i].Value == null) throw new Exceptions.MyException("Wrong operator: "+Lexems[count].LexemName+" Line: " + Lexems[count].RowNumber);
             else return RelationTable[j, i].Value.ToString();
         }
     }

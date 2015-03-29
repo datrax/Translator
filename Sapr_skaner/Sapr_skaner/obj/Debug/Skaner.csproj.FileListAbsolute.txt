@@ -19,3 +19,5 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Au
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Skaner.Fileloader.resources
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\AscendingParser.dll
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\AscendingParser.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\RPN.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\RPN.pdb

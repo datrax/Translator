@@ -1,0 +1,11 @@
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\bin\Debug\RPN.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\bin\Debug\RPN.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\bin\Debug\Exceptions.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\bin\Debug\Lexems.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\bin\Debug\Exceptions.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\bin\Debug\Lexems.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\obj\Debug\RPN.csprojResolveAssemblyReference.cache
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\obj\Debug\RPN.Output.resources
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\obj\Debug\RPN.csproj.GenerateResource.Cache
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\obj\Debug\RPN.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\RPN\obj\Debug\RPN.pdb

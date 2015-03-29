@@ -17,10 +17,10 @@ namespace САПР4
         {
             InitializeComponent();
         }
-        string[] progr = { "init", "/" ,"<spys_elem_1>", "\\" };
+        string[] progr = { "init", "{" ,"<spys_elem_1>", "}" };
         string[] spys_elem_1 = { "<spys_elem>" };
         string[][] spys_elem = { new string[] { "<elem1>", "<rozd>", "<spys_elem>" }, new string[] { "<elem1>", "<rozd>" } };
-        string[][] elem = { new string[] { "<ogol>" }, new string[] { "<oper>" }, new string[] { "<mitka>" }, new string[] { "/", "<spys_elem_1>", "\\" } };
+        string[][] elem = { new string[] { "<ogol>" }, new string[] { "<oper>" }, new string[] { "<mitka>" }/*, new string[] { "{","<spys_elem_1>", "}" }*/ };
         string[] elem1 = { "<elem>" };
         string[] rozd = { "¶" };
         string[] ogol = { "<type>", ":", "<spys_id_1>" };
@@ -29,9 +29,9 @@ namespace САПР4
         string[][] type = { new string[] { "int" }, new string[] { "real" } };
         string[][] oper = { new string[] { "<prysv>" }, new string[] { "<vved>" }, new string[] { "<vyved>" }, new string[] { "<tsykl>" }, new string[] { "<umov_oper>" }, new string[] { "<perehid>" } };
         string[] prysv = { "id", "=", "<ar_vyr>" };
-        string[][] vved = { new string[] { "scan", "(", "<spys_id_1>", ")" }, new string[] { "scan", "(", ")" } };
-        string[] vyved = { "print", "(", "<ar_vyr_1>", ")" };
-        string[] tsykl = { "while", "(", "<log_vyr_1>", ")", "do", "<elem>" };
+        string[][] vved = { new string[] { "scan", "(", "<spys_id_1>", ")" }/*, new string[] { "scan", "(", ")" }*/ };
+        string[] vyved = { "print", "(", "<spys_id_1>", ")" };
+        string[] tsykl = { "while", "(", "<log_vyr_1>", ")", "do","{","<spys_elem_1>","}" };
         string[] umov_oper = { "if", "(", "<log_vyr_1>", ")", "then",  "<spys_elem_1>", "else", "<spys_elem_1>", "endif" };
         string[] mitka = { "id", ":" };
         string[] perehid = { "goto", "id" };
@@ -44,7 +44,7 @@ namespace САПР4
         string[][] log_vyr = { new string[] { "<log_dod_1>", "OR", "<log_vyr>" }, new string[] { "<log_dod_1>" } };
         string[] log_dod_1 = { "<log_dod>" };
         string[][] log_dod = { new string[] { "<log_mnozh>" }, new string[] { "<log_mnozh>", "AND", "<log_dod>" } };
-        string[][] log_mnozh = { new string[] { "(", "<log_vyr_1>", ")" }, new string[] { "<ar_vyr_1>", "<log_znak>", "<ar_vyr>" } };
+        string[][] log_mnozh = { new string[] { "(", "<log_vyr_1>", ")" }, new string[] { "<ar_vyr_1>", "<log_znak>", "<ar_vyr>" } /*,new string[]{"NOT","<log_mnozh>"},*/ };
         string[][] log_znak = { new string[] { "<" }, new string[] { ">" }, new string[] { "==" }, new string[] { ">=" }, new string[] { "<=" }, new string[] { "!=" } };
         ArrayList gram = new ArrayList();
         String[] masneterm;
@@ -249,7 +249,7 @@ namespace САПР4
                                     {
                                         if ((string)dataGridView1.Rows[j].Cells[l2].Value == "=")
                                         {
-                                            //MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas[l1] + " При < на =");
+                                          //  MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas[l1] + " При < на =");
                                             dataGridView1.Rows[j].Cells[l2].Value += "<";
                                             //ShowDialog();
                                         }
@@ -360,7 +360,7 @@ namespace САПР4
                                         {
                                             if ((string)dataGridView1.Rows[l2].Cells[j].Value == "=" || (string)dataGridView1.Rows[l2].Cells[j].Value == "<")
                                             {
-                                               // MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas[l1] + " При > на " + dataGridView1.Rows[l2].Cells[j].Value);
+                                              //  MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas[l1] + " При > на " + dataGridView1.Rows[l2].Cells[j].Value);
                                                 dataGridView1.Rows[l2].Cells[j].Value += ">";
                                                 //ShowDialog();
                                             }
@@ -370,7 +370,7 @@ namespace САПР4
                                                     if ((string)dataGridView1.Rows[0].Cells[l4].Value == mas2[l3])
                                                         if ((string)dataGridView1.Rows[l2].Cells[l4].Value == "=" || (string)dataGridView1.Rows[l2].Cells[l4].Value == "<")
                                                         {
-                                                         //   MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas2[l3] + " При > на " + dataGridView1.Rows[l2].Cells[l4].Value);
+                                                        //    MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas2[l3] + " При > на " + dataGridView1.Rows[l2].Cells[l4].Value);
                                                             dataGridView1.Rows[l2].Cells[l4].Value += ">";
                                                             //ShowDialog();
                                                         }
@@ -386,7 +386,7 @@ namespace САПР4
                                         {
                                             if ((string)dataGridView1.Rows[l2].Cells[j].Value == "=" || (string)dataGridView1.Rows[l2].Cells[j].Value == "<")
                                             {
-                                             // MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas[l1] + " При > на " + dataGridView1.Rows[l2].Cells[j].Value);
+                                          //    MessageBox.Show("Конфлікт!\n <" + noterm + "> " + mas[l1] + " При > на " + dataGridView1.Rows[l2].Cells[j].Value);
                                                 dataGridView1.Rows[l2].Cells[j].Value += ">";
                                                 //ShowDialog();
                                             }
