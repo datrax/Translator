@@ -71,7 +71,7 @@
             this.FilePath.Name = "FilePath";
             this.FilePath.Size = new System.Drawing.Size(228, 20);
             this.FilePath.TabIndex = 3;
-            this.FilePath.Text = "C:\\Users\\datrax\\Documents\\GitHub\\Translator\\Новый текстовый документ1.dt";
+            this.FilePath.Text = "C:\\Users\\datrax\\Documents\\GitHub\\Translator\\Новый текстовый документ3.dt";
             this.FilePath.TextChanged += new System.EventHandler(this.FilePath_TextChanged);
             // 
             // button2

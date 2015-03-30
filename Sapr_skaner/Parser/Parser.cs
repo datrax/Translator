@@ -60,10 +60,10 @@ namespace Parser
             if (TryNextLexem().LexemCode == 1)
             {
                 GetNextLexem();
-                if (TryNextLexem().LexemCode == 30)
+                if (TryNextLexem().LexemCode == 33)
                 {
                     GetNextLexem();
-                    if (TryNextLexem().LexemCode == 50)
+                  /*  if (TryNextLexem().LexemCode == 50)
                     {
                         GetNextLexem();
                         if (TryNextLexem().LexemCode == 31)
@@ -75,11 +75,11 @@ namespace Parser
                                 if (TryNextLexem().LexemCode == 31)
                                 {
                                     GetNextLexem();
-                                    SkipEnters();
+                                    SkipEnters();*/
                                     if (IsElemList())
                                     {
-                                        SkipEnters();
-                                        if (TryNextLexem().LexemCode == 27)
+                                       // SkipEnters();
+                                        if (TryNextLexem().LexemCode == 34)
                                         {
                                             GetNextLexem();
 
@@ -95,7 +95,7 @@ namespace Parser
                                         else
                                         {
                                             System.Diagnostics.Debug.WriteLine(TryNextLexem().LexemCode);
-                                            throw new Exceptions.MyException("Error! make sure you closed the scope  Line:" + CurrentLexem.RowNumber);
+                                            throw new Exceptions.MyException("Error! make sure you closed the scope \"}\" Line:" + CurrentLexem.RowNumber);
                                         }
                                     }
 
@@ -104,7 +104,7 @@ namespace Parser
                                         throw new Exceptions.MyException("Error! Elem List expected Line:" + CurrentLexem.RowNumber);
                                     }
                                 }
-                                else
+                           /*     else
                                 {
 
                                     throw new Exceptions.MyException("Error! make sure you made new line Line:2");
@@ -116,7 +116,7 @@ namespace Parser
                                 throw new Exceptions.MyException("Error! \"/\" expected Line:2");
                             }
                         }
-                        else
+                   /*     else
                         {
 
                             throw new Exceptions.MyException("Error! make sure you made new line Line:1");
@@ -127,11 +127,11 @@ namespace Parser
 
                         throw new Exceptions.MyException("Error! program name expected  Line:1");
                     }
-                }
+                }*/
                 else
                 {
 
-                    throw new Exceptions.MyException("Error! \":\" expected  Line:1");
+                    throw new Exceptions.MyException("Error! \"{\" expected  Line:1");
                 }
             }
             else
@@ -158,7 +158,7 @@ namespace Parser
                 {
                     GetNextLexem();
                     SkipEnters();
-                    if (IsElemList())
+                    if (TryNextLexem().LexemCode==10||TryNextLexem().LexemCode==11||TryNextLexem().LexemCode==34||IsElemList())
                     {
 
                         return true;
@@ -192,7 +192,7 @@ namespace Parser
 
         private bool IsElem()
         {
-            if (TryNextLexem().LexemCode == 26)
+         /*   if (TryNextLexem().LexemCode == 26)
             {
                 GetNextLexem();
 
@@ -224,13 +224,14 @@ namespace Parser
                     throw new Exceptions.MyException("Error! make sure you made new line  Line:" + CurrentLexem.RowNumber);
                 }
             }
-            else
+            else*/
 
                 if (IsLabel() || IsOgol() || IsOper())
                 {
                     return true;
                 }
-                else return false;
+                else throw new Exceptions.MyException("Error! Operator expected  Line:" + CurrentLexem.RowNumber);
+        
         }
 
         private bool IsLabel()
@@ -392,7 +393,7 @@ namespace Parser
                 if (TryNextLexem().LexemCode == 28)
                 {
                     GetNextLexem();
-                    if (IsArythm())
+                    if (IsSpysId())
                     {
                         if (TryNextLexem().LexemCode == 29)
                         {
@@ -439,10 +440,11 @@ namespace Parser
                         }
                         else
                         {
-                            throw new Exceptions.MyException("Error! identificator's or right scope expected Line:" + CurrentLexem.RowNumber);
+                            throw new Exceptions.MyException("Error! right scope expected Line:" + CurrentLexem.RowNumber);
                         }
                     }
-                    else
+                    else throw new Exceptions.MyException("Error! id list expected Line:" + CurrentLexem.RowNumber);
+                 /*   else
                     {
                         if (TryNextLexem().LexemCode == 29)
                         {
@@ -453,7 +455,7 @@ namespace Parser
                         {
                             throw new Exceptions.MyException("Error! identificator's or right scope expected Line:" + CurrentLexem.RowNumber);
                         }
-                    }
+                    }*/
                 }
                 else
                 {
@@ -482,20 +484,30 @@ namespace Parser
                             if (TryNextLexem().LexemCode == 7)
                             {
                                 GetNextLexem();
-                                if (TryNextLexem().LexemCode == 31)
+                                if (TryNextLexem().LexemCode == 33)
                                 {
                                     GetNextLexem();
 
-                                    if (IsElem())
-                                        return true;
+                                    if (IsElemList())
+                                    {
+                                        
+                                        if (TryNextLexem().LexemCode == 34)
+                                        {
+                                            GetNextLexem();
+                                            return true;
+                                        }
+                                        else throw new Exceptions.MyException("Error! \"}\" expected Line:" + CurrentLexem.RowNumber);
+                                    }
                                     else
                                     {
                                         GetNextLexem();
-                                        throw new Exceptions.MyException("Error! Wrong operator after while,operator is expected Line:" + CurrentLexem.RowNumber);
+                                        throw new Exceptions.MyException(
+                                            "Error! Wrong operator after while,operator is expected Line:" +
+                                            CurrentLexem.RowNumber);
                                     }
                                 }
 
-                                else throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
+                                else throw new Exceptions.MyException("Error! \"{\" expected Line:" + CurrentLexem.RowNumber);
                             }
                             else throw new Exceptions.MyException("Error! do expected Line:" + CurrentLexem.RowNumber);
                         }
@@ -525,9 +537,9 @@ namespace Parser
                             if (TryNextLexem().LexemCode == 9)
                             {
                                 GetNextLexem();
-                                if (TryNextLexem().LexemCode == 31)
+                         //       if (TryNextLexem().LexemCode == 31)
                                 {
-                                    GetNextLexem();
+                           //         GetNextLexem();
                                     StateFlag = 1;
                                     SkipEnters();
                                     if (IsElemList())
@@ -538,9 +550,9 @@ namespace Parser
                                         {
                                             GetNextLexem();
 
-                                            if (TryNextLexem().LexemCode == 31)
+                                      //      if (TryNextLexem().LexemCode == 31)
                                             {
-                                                GetNextLexem();
+                                    //            GetNextLexem();
                                                 StateFlag = 2;
                                                 SkipEnters();
                                                 if (IsElemList())
@@ -560,7 +572,7 @@ namespace Parser
                                                 else
                                                     throw new Exceptions.MyException("Error! wrong elem list Line:" + CurrentLexem.RowNumber);
                                             }
-                                            else throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
+                            //                else throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
                                         }
                                         else
                                             throw new Exceptions.MyException("Error! else expected Line:" + CurrentLexem.RowNumber);
@@ -568,8 +580,8 @@ namespace Parser
                                     else
                                         throw new Exceptions.MyException("Error! wrong elem list Line:" + CurrentLexem.RowNumber);
                                 }
-                                else
-                                    throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
+                     //           else
+                       //             throw new Exceptions.MyException("Error! new line expected Line:" + CurrentLexem.RowNumber);
                             }
                             else
                                 throw new Exceptions.MyException("Error! then expected Line:" + CurrentLexem.RowNumber);
@@ -694,19 +706,28 @@ namespace Parser
             if ((TryNextLexem().LexemCode == 2 || TryNextLexem().LexemCode == 3))
             {
                 GetNextLexem();
-                if (IsSpysId())
+                if ((TryNextLexem().LexemCode == 30))
                 {
-                    return true;
+                    GetNextLexem();
+                    if (IsSpysId())
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exceptions.MyException("Error! Identificator list expected Line:" +
+                                                         CurrentLexem.RowNumber);
+                    }
                 }
-                else
-                {
-                    throw new Exceptions.MyException("Error! Identificator list expected Line:" + CurrentLexem.RowNumber);
-                }
+                else throw new Exceptions.MyException("Error! : expected Line:" + CurrentLexem.RowNumber);
             }
             else
             {
                 return false;
-            };
+            }
+            ;
+            
+        
         }
 
         private bool IsSpysId()

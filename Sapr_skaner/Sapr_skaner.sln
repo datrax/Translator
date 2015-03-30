@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AscendingParser", "Ascendin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPN", "RPN\RPN.csproj", "{836493CC-B67B-429B-975A-953BF9F13BF2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interpreter", "Interpreter\Interpreter.csproj", "{8B8C2C39-56E5-45E3-8EC9-E3B1D821DFBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{836493CC-B67B-429B-975A-953BF9F13BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{836493CC-B67B-429B-975A-953BF9F13BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{836493CC-B67B-429B-975A-953BF9F13BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B8C2C39-56E5-45E3-8EC9-E3B1D821DFBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B8C2C39-56E5-45E3-8EC9-E3B1D821DFBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B8C2C39-56E5-45E3-8EC9-E3B1D821DFBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B8C2C39-56E5-45E3-8EC9-E3B1D821DFBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

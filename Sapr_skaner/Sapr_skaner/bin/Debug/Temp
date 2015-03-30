@@ -1,10 +1,6 @@
 init{int: a,b,c,d,e,f
- if (a<b) then goto exit
- else print(a)
- endif
-scan(a)
-b=-a+b*c*(d/e)/f
-while (a>b) do {print(a)
-}
-exit:
+l:
+a=4
+print(a)
+goto l
 }

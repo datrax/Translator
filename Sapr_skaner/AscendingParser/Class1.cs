@@ -16,22 +16,28 @@ namespace AscendingParser
         Skaner.Lexems CurrentLexem;
 
         string[] NotTerminals;
-        DataGridView RelationTable;
+       public DataGridView RelationTable { get; private set; }
         ArrayList grammar;
         int count;
         List<string> stack = new List<string>();
+         САПР4.Form1 relationform = new САПР4.Form1();
         public Parser(List<Skaner.Lexems> Lexems)
         {
             this.Lexems = new List<Skaner.Lexems>(Lexems);
             count = 0;
-            САПР4.Form1 relationform = new САПР4.Form1();
-          //  relationform.Show();
+           
+          
             relationform.FillTheTable();
+            
             RelationTable = relationform.GetTable();
             grammar = relationform.GetGrammar();
             NotTerminals = relationform.GetNotTerminals();
         }
 
+        public void ShowRelations()
+        {
+            relationform.Show();
+        }
         private Skaner.Lexems TryNextLexem()
         {
             if (count >= Lexems.Count)
@@ -149,7 +155,9 @@ namespace AscendingParser
         }
         public string GetRelation(String Lex1, String Lex2)
         {
-          //  if (Lex1 == "NOT" || Lex2 == "NOT") throw new Exceptions.MyException("Wrong operator: " + Lexems[count].LexemName + " Line: " + Lexems[count].RowNumber);
+            
+            if (Lex1 == "NOT" || Lex2 == "NOT")
+                throw new Exceptions.MyException("This method doesn't support operator NOT, sorry( Line:  " + CurrentLexem.RowNumber);
             if (Lex1 == "") return "<";
             if (Lex2 == "") return ">";
             int i = 0, j = 0;

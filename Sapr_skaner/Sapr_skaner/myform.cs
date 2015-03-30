@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Interpreters;
+using System.Threading;
 
 
 namespace Skaner
 {
-
+    public delegate void del();
     public class myform : Form
     {
         private Button button1;
@@ -25,7 +27,10 @@ namespace Skaner
         private List<Lexems> LabelItems;
 
         private TextBox textBox11;
+        private ComboBox ParsingMethod;
+        private TextBox OutputScreen;
         private Button button4;
+        private TextBox inputBox;
 
         string path;
         public myform()
@@ -36,7 +41,9 @@ namespace Skaner
             IdItems = new List<Lexems>();
             GotoItems = new List<Lexems>();
             LabelItems = new List<Lexems>();
-
+            ParsingMethod.Items.Add("Рекурсивный спуск");
+            ParsingMethod.Items.Add("Высходящий разбор");
+            ParsingMethod.SelectedItem = ParsingMethod.Items[1];
         }
         #region Initform
         private void InitializeComponent()
@@ -45,12 +52,15 @@ namespace Skaner
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.textBox11 = new System.Windows.Forms.TextBox();
+            this.ParsingMethod = new System.Windows.Forms.ComboBox();
+            this.OutputScreen = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
+            this.inputBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 460);
+            this.button1.Location = new System.Drawing.Point(671, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(99, 23);
             this.button1.TabIndex = 1;
@@ -60,7 +70,7 @@ namespace Skaner
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(117, 460);
+            this.button2.Location = new System.Drawing.Point(784, 12);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -70,11 +80,11 @@ namespace Skaner
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(515, 460);
+            this.button3.Location = new System.Drawing.Point(732, 100);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
-            this.button3.Text = "Лексемы";
+            this.button3.Text = "Выполнить";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -90,20 +100,49 @@ namespace Skaner
             this.textBox11.WordWrap = false;
             this.textBox11.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox11_KeyDown);
             // 
+            // ParsingMethod
+            // 
+            this.ParsingMethod.FormattingEnabled = true;
+            this.ParsingMethod.Location = new System.Drawing.Point(671, 58);
+            this.ParsingMethod.Name = "ParsingMethod";
+            this.ParsingMethod.Size = new System.Drawing.Size(188, 21);
+            this.ParsingMethod.TabIndex = 5;
+            // 
+            // OutputScreen
+            // 
+            this.OutputScreen.Location = new System.Drawing.Point(670, 142);
+            this.OutputScreen.Multiline = true;
+            this.OutputScreen.Name = "OutputScreen";
+            this.OutputScreen.ReadOnly = true;
+            this.OutputScreen.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.OutputScreen.Size = new System.Drawing.Size(189, 160);
+            this.OutputScreen.TabIndex = 6;
+            this.OutputScreen.TextChanged += new System.EventHandler(this.StopThred);
+            // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(406, 460);
+            this.button4.Location = new System.Drawing.Point(801, 308);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "ПОЛИЗ";
+            this.button4.Size = new System.Drawing.Size(58, 23);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "Ввод";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button4.Click += new System.EventHandler(this.InputNumber);
+            // 
+            // inputBox
+            // 
+            this.inputBox.Location = new System.Drawing.Point(672, 310);
+            this.inputBox.Name = "inputBox";
+            this.inputBox.Size = new System.Drawing.Size(123, 20);
+            this.inputBox.TabIndex = 8;
             // 
             // myform
             // 
-            this.ClientSize = new System.Drawing.Size(664, 497);
+            this.ClientSize = new System.Drawing.Size(871, 455);
+            this.Controls.Add(this.inputBox);
             this.Controls.Add(this.button4);
+            this.Controls.Add(this.OutputScreen);
+            this.Controls.Add(this.ParsingMethod);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -148,9 +187,7 @@ namespace Skaner
 
                 if (MainItems[i].LexemCode == -1)
                 {
-                    /*c = MainItems[i].RowNumber;
-                    text = "Undefined lexem";
-                    return false;*/
+
                     throw new Exceptions.MyException(("Error! Undefined lexem Line:" + MainItems[i].RowNumber));
                 }
                 if (MainItems[i].LexemCode == 50)
@@ -163,17 +200,12 @@ namespace Skaner
                         {
                             if (MainItems[i].type.Equals(IdItems[j].type)||(MainItems[i].type!=0))
                             {
-                                /*c = MainItems[i].RowNumber;
-                                text = "Variables are the same";
-                                return false;*/
-                                throw new Exceptions.MyException(("Error! Variables are the same Line:" + MainItems[i].RowNumber));
+                        
                             }
                             MainItems[i].IdConstCode = IdItems[j].IdConstCode;
                             MainItems[i].type = IdItems[j].type;
                             notfound = false;
 
-                            /*if (MainItems[i].RowNumber == IdItems[j].RowNumber)
-                            { c = MainItems[i].RowNumber; text = "Variables are the same"; return false; }*/
                         }
                     }
                     if (notfound && MainItems[i].type > 0)
@@ -191,9 +223,7 @@ namespace Skaner
                     if (MainItems[i].type == 5) GotoItems.Add(MainItems[i]);
                     if (MainItems[i].type == 0)
                     {
-                        /* c = MainItems[i].RowNumber;
-                         text = "Undefined variable";
-                         return false;*/
+
                         throw new Exceptions.MyException(("Error! Undefined variable Line:" + MainItems[i].RowNumber));
                     }
                 }
@@ -225,16 +255,7 @@ namespace Skaner
 
                 tableform.LexemTable.Rows.Add(MainItems[i].LexemNumber, MainItems[i].RowNumber, MainItems[i].LexemName, MainItems[i].LexemCode, MainItems[i].IdConstCode.ToString() == "0" ? " " : MainItems[i].IdConstCode.ToString());
             }
-            /*  for (int i = 0; i < IdItems.LongCount(); i++)
-                  for (int j = i + 1; j < IdItems.LongCount(); j++)
-                  {
-                      if (IdItems[i].LexemName == IdItems[j].LexemName)
-                      {
-                          c = IdItems[j].RowNumber;
-                          text = "The same label";
-                          return true;
-                      }
-                  }*/
+
             CheckingLabels();
 
             foreach (Lexems g in IdItems)
@@ -252,64 +273,53 @@ namespace Skaner
 
             return true;
         }
-        bool CheckingLabels()
+       void CheckingLabels()
         {
-            for (int i = 0; i < GotoItems.LongCount(); i++)
-                for (int j = i + 1; j < GotoItems.LongCount(); j++)
-                {
-                    if (GotoItems[i].LexemName == GotoItems[j].LexemName)
-                    {
-                        throw new Exceptions.MyException(("Error! Duplicate name of the label Line:" + GotoItems[j].RowNumber));
-                    }
-                }
-
-            if (GotoItems.LongCount() != LabelItems.LongCount())
-                if (GotoItems.LongCount() > LabelItems.LongCount())
-                {
-                    throw new Exceptions.MyException(("Error! Label's not found. Line:" + GotoItems[0].RowNumber));
-                }
-                else
-                {
-                    throw new Exceptions.MyException(("Error! goto isn't found. Line:" + LabelItems[0].RowNumber));
-                }
-            for (int i = 0; i < GotoItems.LongCount(); i++)
-            {
-                for (int j = 0; j < LabelItems.LongCount(); j++)
-                    if (LabelItems[j].LexemName.Equals(GotoItems[i].LexemName))
-                    {
-                        LabelItems.RemoveAt(j);
-                        break;
-                    }
-
-            }
-            if (LabelItems.LongCount() > 0)
-            {
-
-                throw new Exceptions.MyException(("Error goto isn't found. Line:" + LabelItems[0].RowNumber));
-            }
-
-            return false;
+           for (int i = 0; i < GotoItems.LongCount(); i++)
+           {
+               bool found = false;
+               for (int j = 0; j < LabelItems.LongCount(); j++)
+               {
+                   if (LabelItems[j].LexemName.Equals(GotoItems[i].LexemName))
+                       found = true;
+               }
+               if (found==false)
+               {
+                   throw new Exceptions.MyException(("Error! Label's not found. Line:" + GotoItems[i].RowNumber));
+               }
+           }                       
         }
 
+        private Thread InterpreterThread;
         private void button3_Click(object sender, EventArgs e)
         {
-            start_lexem_determination();
-
+            if (button3.Text == "Выполнить")
+            {
+                button3.Text = "Стоп";
+                start_lexem_determination();
+              
+            }
+            else
+            {
+                if(InterpreterThread!=null)InterpreterThread.Abort();
+                button3.Text = "Выполнить";
+            }
+            
         }
 
         void displa_error_message(Exceptions.MyException ex)
         {
+            OutputScreen.Text += "There are errors:"+Environment.NewLine;
             int row;
             int.TryParse(ex.Message.Substring(ex.Message.LastIndexOf(":")+1), out row);
             textBox11.Select(find_line_position(row - 1) + 1, find_line_position(row) - find_line_position(row - 1) - 2);//-2 and +1 to avoid catching special symbols
             textBox11.Focus();
             MessageBox.Show(ex.Message);
-            // textBox11.SelectedText = new Font(textBox11.Font.Bold, 10);
-          //  MessageBox.Show("Error!  " + text + "  line: " + c);
+            OutputScreen.Text += ex.Message;
         }
         void start_lexem_determination()
         {
-
+            OutputScreen.Clear();
             IdItems.Clear();
             ConstItems.Clear();
             GotoItems.Clear();
@@ -325,36 +335,46 @@ namespace Skaner
             try
             {
                 Validate(tableform);
-              //  tableform.Show();//shows lexem table
-
-                dynamic parser = new AscendingParser.Parser(MainItems); 
-
-                //Parser.Parser parsobj = new Parser.Parser(MainItems);//Descending parser
-                //parsobj.Table();
-               
-
-                //AutoParser.Parser parsobj = new AutoParser.Parser(MainItems);//Auto parser
-               
-              
-           
-               
-               //AscendingParser.Parser parser = new AscendingParser.Parser(MainItems);
-                AscendingParser.StackOutput stackoutput = new AscendingParser.StackOutput(MainItems);
-                parser.datagrid = stackoutput.dataGridView1;
-                //stackoutput.Show();
-                
-         
+             //    tableform.Show();//shows lexem table
+                  OutputScreen.Text += "Lexem analiz - sucess"+Environment.NewLine;
+                dynamic parser = null; 
+                if (ParsingMethod.SelectedIndex == 0)
+                {
+                    parser = new Parser.Parser(MainItems);
+                   
+                }
+                if (ParsingMethod.SelectedIndex == 1)
+                {
+                    parser = new AscendingParser.Parser(MainItems);
+                    AscendingParser.StackOutput stackoutput = new AscendingParser.StackOutput(MainItems);
+                    parser.datagrid = stackoutput.dataGridView1;
+                    //parser.ShowRelations();
+                    //  stackoutput.Show();
+                    
+                }
+                if (ParsingMethod.SelectedIndex == 2)
+                {
+                  parser = new AutoParser.Parser(MainItems);//Auto parser
+               // parser.Table();
+                }               
                 parser.check();
+                OutputScreen.Text += "Grammar analiz - sucess"+Environment.NewLine;
 
-                //
                 RPN.PolishNotation polobj = new RPN.PolishNotation(MainItems);
                 polobj.build();
-                //
+                OutputScreen.Text += "Polish Notation built"+Environment.NewLine+"Execution:"+Environment.NewLine+"_________________"+Environment.NewLine+Environment.NewLine;
+                Interpreters.Interpreter interpreter = new Interpreters.Interpreter(polobj.rpn,tableform.IdTable,polobj.labelgrid,OutputScreen,this);
 
-                MessageBox.Show("allright!");
+                InterpreterThread = new Thread(new ThreadStart(interpreter.Execute));
+
+                
+                InterpreterThread.Start();
+
+
             }
             catch (Exceptions.MyException ex)
             {
+               
                 displa_error_message(ex);
               
             }
@@ -366,8 +386,8 @@ namespace Skaner
 
         private void textBox11_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F5) start_lexem_determination();
-            if (e.KeyCode == Keys.F6) button4_Click(null,null);
+            if (e.KeyCode == Keys.F5) button3_Click(null,null);
+
         }
         private int find_line_position(int row)
         {
@@ -386,37 +406,33 @@ namespace Skaner
             return count;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void InputNumber(object sender, EventArgs e)
         {
-            IdItems.Clear();
-            ConstItems.Clear();
-            GotoItems.Clear();
-            LabelItems.Clear();
-            MainItems.Clear();
-            LexemsTable tableform = new LexemsTable();
-            StreamReader str;
-            File.WriteAllText("Temp", textBox11.Text, Encoding.Default);
-            str = File.OpenText("Temp");
-            LexFind ob = new LexFind(str);
-            while (ob.can_read())
-                MainItems.Add(ob.NextLex());
-            try
+            double an;
+            if (Double.TryParse(inputBox.Text, out an))
+                OutputScreen.Text += an.ToString();
+            else
             {
-                RPN.PolishNotation polobj = new RPN.PolishNotation(MainItems);
-
-                polobj.build();
-                MessageBox.Show("allright!");
-
+                MessageBox.Show("Only numbers!!");
             }
-            catch (Exceptions.MyException ex)
-            {
-                displa_error_message(ex);
+            inputBox.Text = "";
+        }
 
-            }
-            finally
+        private void StopThred(object sender, EventArgs e)
+        {
+            if (OutputScreen.TextLength>0&&OutputScreen.Text[OutputScreen.TextLength - 1] == 'e')
             {
-                str.Close();
+                if (InterpreterThread != null) InterpreterThread.Abort();
+                button3.Text = "Выполнить";
             }
         }
+         ~myform()
+
+        {
+            if (InterpreterThread != null) InterpreterThread.Abort();
+            InterpreterThread.Join();
+        }
+
+
     }
 }

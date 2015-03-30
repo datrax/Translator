@@ -1,1 +1,19 @@
-a+b*c/d
+init{int: a,b,c,d,e,f
+scan(a)
+scan(b)
+c=a
+real: p
+real: p1
+while(c>1)do{d=a/c
+p=a/c
+e=b/c
+p1=b/c
+if((d-p==0)AND(p1-e==0))then a=p
+b=p1
+else f=f
+endif
+c=c-1
+}
+print(a)
+print(b)
+}

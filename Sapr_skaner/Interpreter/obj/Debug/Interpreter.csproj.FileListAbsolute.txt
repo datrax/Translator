@@ -1,0 +1,7 @@
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\bin\Debug\Interpreter.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\bin\Debug\Interpreter.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\obj\Debug\Interpreter.csprojResolveAssemblyReference.cache
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\obj\Debug\Interpreter.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\obj\Debug\Interpreter.pdb
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\bin\Debug\Exceptions.dll
+C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Interpreter\bin\Debug\Exceptions.pdb

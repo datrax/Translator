@@ -1,4 +1,4 @@
 init{int: a,b,c,d,e,f
-while(a<b)do{a=a-1
-}
+scan(a)
+print(a)
 }

@@ -30,27 +30,28 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.LexemTable = new System.Windows.Forms.DataGridView();
-            this.IdTable = new System.Windows.Forms.DataGridView();
-            this.ConstTable = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.IdTable = new System.Windows.Forms.DataGridView();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.ConstTable = new System.Windows.Forms.DataGridView();
             this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LabelName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LexemTable)).BeginInit();
+            this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.IdTable)).BeginInit();
+            this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ConstTable)).BeginInit();
             this.SuspendLayout();
             // 
@@ -76,28 +77,6 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.IdTable);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(573, 315);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.ConstTable);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(573, 315);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
             // LexemTable
             // 
             this.LexemTable.AllowUserToAddRows = false;
@@ -112,29 +91,6 @@
             this.LexemTable.Name = "LexemTable";
             this.LexemTable.Size = new System.Drawing.Size(561, 278);
             this.LexemTable.TabIndex = 0;
-            // 
-            // IdTable
-            // 
-            this.IdTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.IdTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column6,
-            this.Column7,
-            this.Column8});
-            this.IdTable.Location = new System.Drawing.Point(6, 6);
-            this.IdTable.Name = "IdTable";
-            this.IdTable.Size = new System.Drawing.Size(349, 150);
-            this.IdTable.TabIndex = 0;
-            // 
-            // ConstTable
-            // 
-            this.ConstTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ConstTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column9,
-            this.Column10});
-            this.ConstTable.Location = new System.Drawing.Point(7, 7);
-            this.ConstTable.Name = "ConstTable";
-            this.ConstTable.Size = new System.Drawing.Size(264, 150);
-            this.ConstTable.TabIndex = 0;
             // 
             // Column1
             // 
@@ -161,20 +117,51 @@
             this.Column5.HeaderText = "Код ID/Cosnt";
             this.Column5.Name = "Column5";
             // 
-            // Column6
+            // tabPage2
             // 
-            this.Column6.HeaderText = "Назва";
-            this.Column6.Name = "Column6";
+            this.tabPage2.Controls.Add(this.IdTable);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(573, 315);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // Column7
+            // IdTable
             // 
-            this.Column7.HeaderText = "Код";
-            this.Column7.Name = "Column7";
+            this.IdTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.IdTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.LabelName,
+            this.Column7,
+            this.Column8,
+            this.Value});
+            this.IdTable.Location = new System.Drawing.Point(6, 6);
+            this.IdTable.Name = "IdTable";
+            this.IdTable.Size = new System.Drawing.Size(541, 289);
+            this.IdTable.TabIndex = 0;
             // 
-            // Column8
+            // tabPage3
             // 
-            this.Column8.HeaderText = "Тип";
-            this.Column8.Name = "Column8";
+            this.tabPage3.Controls.Add(this.ConstTable);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(573, 315);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // ConstTable
+            // 
+            this.ConstTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ConstTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column9,
+            this.Column10});
+            this.ConstTable.Location = new System.Drawing.Point(7, 7);
+            this.ConstTable.Name = "ConstTable";
+            this.ConstTable.Size = new System.Drawing.Size(264, 150);
+            this.ConstTable.TabIndex = 0;
             // 
             // Column9
             // 
@@ -186,6 +173,26 @@
             this.Column10.HeaderText = "Код";
             this.Column10.Name = "Column10";
             // 
+            // LabelName
+            // 
+            this.LabelName.HeaderText = "Назва";
+            this.LabelName.Name = "LabelName";
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "Код";
+            this.Column7.Name = "Column7";
+            // 
+            // Column8
+            // 
+            this.Column8.HeaderText = "Тип";
+            this.Column8.Name = "Column8";
+            // 
+            // Value
+            // 
+            this.Value.HeaderText = "Значение";
+            this.Value.Name = "Value";
+            // 
             // LexemsTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -196,10 +203,10 @@
             this.Text = "LexemsTable";
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LexemTable)).EndInit();
+            this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.IdTable)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ConstTable)).EndInit();
             this.ResumeLayout(false);
 
@@ -214,9 +221,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column10;
@@ -224,5 +228,9 @@
         public System.Windows.Forms.DataGridView IdTable;
         public System.Windows.Forms.DataGridView ConstTable;
         public System.Windows.Forms.DataGridView LexemTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn LabelName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
     }
 }

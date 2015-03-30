@@ -12,14 +12,23 @@ namespace RPN
 {
     public class PolishNotation
     {
+        public DataGridView labelgrid
+        {
+            get
+            {
+                return table.labelgrid;
+            }
+        }
+
         Dictionary<string,int>labels=new Dictionary<string, int>();
         List<Skaner.Lexems> Lexems;
         Dictionary<string, int> priority = new Dictionary<string, int>();
         int count;
         Skaner.Lexems CurrentLexem;
-        List<String> rpn = new List<string>();
+        public List<String> rpn {get ; set; }
         List<string> stack = new List<string>();
         Output table = new Output();
+        
         private Skaner.Lexems TryNextLexem()
         {
             if (count >= Lexems.Count)
@@ -39,8 +48,9 @@ namespace RPN
 
         public PolishNotation(List<Skaner.Lexems> Lexems)
         {
-            this.Lexems = new List<Skaner.Lexems>(Lexems);
-            List<Skaner.Lexems> l = new List<Skaner.Lexems>();
+            rpn = new List<string>();
+            this.Lexems = Lexems;
+           /* List<Skaner.Lexems> l = new List<Skaner.Lexems>();
             bool copy = false;
             foreach (Lexems t in Lexems)
             {
@@ -50,9 +60,9 @@ namespace RPN
                     copy = true;
                 /*  if (t.LexemCode == 31)
                       copy = false;*/
-            }
+       //     }
             //  l.RemoveRange(l.Count - 2, 2);
-            this.Lexems = l;
+      //      this.Lexems = l;*/
 
             count = 0;
 
@@ -67,6 +77,7 @@ namespace RPN
             priority.Add("=", 2);
             priority.Add("OR", 3);
             priority.Add("AND", 4);
+            priority.Add("NOT", 5);
             priority.Add("<", 6);
             priority.Add(">", 6);
             priority.Add("==", 6);
@@ -88,6 +99,15 @@ namespace RPN
 
                 switch (TryNextLexem().LexemCode)
                 {
+                    case 1:
+                        GetNextLexem();
+                        break;
+                    case 2:
+                    case 3:
+                    {
+                        while (GetNextLexem().LexemCode != 31) ;
+                    }
+                        break;
                     case 4:
                         Output(); break;
                     case 5: Input();
@@ -244,7 +264,7 @@ namespace RPN
                     {
                         if (count == Lexems.Count-1)
                         {
-                            table.Show();
+ //                           table.Show();
                             return;
                         }
                         rpn.Add(stack[stack.Count-1]);
@@ -337,7 +357,7 @@ namespace RPN
         {
          
             MakeRpn();
-            MessageBox.Show(rpn.Aggregate("", (current, t) => current + (" " + t)));
+            //MessageBox.Show(rpn.Aggregate("", (current, t) => current + (" " + t)));
           
 
         }

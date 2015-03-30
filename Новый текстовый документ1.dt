@@ -1,10 +1,18 @@
-init{int: a,b,c,d,e,f
+init{int: a,c,d,e,f
+a=8
+real: b
+b=5
+c=4
+d=6
+e=14
+f=-123
  if (a<b) then goto exit
  else print(a)
  endif
-scan(a)
 b=-a+b*c*(d/e)/f
+print(b)
 while (a>b) do {print(a)
+a=a-1
 }
 exit:
 }

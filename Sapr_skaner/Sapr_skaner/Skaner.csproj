@@ -110,6 +110,10 @@
       <Project>{bffb3bf6-2a7e-4949-a296-e9b3df82fb77}</Project>
       <Name>Exceptions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Interpreter\Interpreter.csproj">
+      <Project>{8b8c2c39-56e5-45e3-8ec9-e3b1d821dfbf}</Project>
+      <Name>Interpreter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Lexems\Lexems.csproj">
       <Project>{9ecb6d8d-cc64-4e17-a349-c5a0b07a41db}</Project>
       <Name>Lexems</Name>
