@@ -207,6 +207,7 @@ namespace Interpreters
                         form.Invoke(new ThreadStart(delegate
                         {
                             output.Text += GetVarValue(stack.Pop()) + Environment.NewLine;
+                            output.SelectionStart = output.Text.Length;
                         }));
                       
                     }break;
@@ -234,7 +235,7 @@ namespace Interpreters
                         {
                             buf += str[j];
                         }
-                        string reversebuf="";
+                        string reversebuf="";                       
                         for (int j = buf.Length-1;j>=0 ;j--)
                         {
                             reversebuf += buf[j];
@@ -244,11 +245,12 @@ namespace Interpreters
                         if(GetVarType(val))
                             SetVarValue(val,(int)Double.Parse(buf));
                         else
-                            SetVarValue(val, (int)Double.Parse(buf));
+                            SetVarValue(val, Double.Parse(buf));
 
                         form.Invoke(new ThreadStart(delegate
                         {
                             output.Text += Environment.NewLine;
+                            output.SelectionStart = output.Text.Length;
                         }));
                     }break;
                     case "БП":
@@ -399,6 +401,8 @@ namespace Interpreters
             {
                 output.Text += "_______________"+Environment.NewLine;
                 output.Text += "Done";
+
+                //output.SelectionStart = output.Text.Length;
 
             }));
         }

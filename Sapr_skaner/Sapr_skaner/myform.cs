@@ -149,6 +149,7 @@ namespace Skaner
             this.Controls.Add(this.textBox11);
             this.Name = "myform";
             this.Text = "Datrax editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.StopThreads);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,7 +201,7 @@ namespace Skaner
                         {
                             if (MainItems[i].type.Equals(IdItems[j].type)||(MainItems[i].type!=0))
                             {
-                        
+                                throw new Exceptions.MyException(("Error! Variables are the same Line:" + MainItems[i].RowNumber));
                             }
                             MainItems[i].IdConstCode = IdItems[j].IdConstCode;
                             MainItems[i].type = IdItems[j].type;
@@ -426,12 +427,12 @@ namespace Skaner
                 button3.Text = "Выполнить";
             }
         }
-         ~myform()
 
-        {
-            if (InterpreterThread != null) InterpreterThread.Abort();
-            InterpreterThread.Join();
-        }
+
+         private void StopThreads(object sender, FormClosingEventArgs e)
+         {
+             if (InterpreterThread != null) InterpreterThread.Abort();
+         }
 
 
     }

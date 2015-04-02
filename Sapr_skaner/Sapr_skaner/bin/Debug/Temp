@@ -1,6 +1,5 @@
 init{int: a,b,c,d,e,f
-l:
-a=4
+scan(a)
+real: a
 print(a)
-goto l
 }
