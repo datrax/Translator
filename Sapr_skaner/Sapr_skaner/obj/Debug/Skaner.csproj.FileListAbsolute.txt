@@ -23,3 +23,6 @@ C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\RP
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\RPN.pdb
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Interpreter.dll
 C:\Users\datrax\Documents\GitHub\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Interpreter.pdb
+C:\Users\datra\Documents\GitHubVisualStudio\Translator\Sapr_skaner\Sapr_skaner\bin\Debug\Sapr_skaner.exe.config
+C:\Users\datra\Documents\GitHubVisualStudio\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.exe
+C:\Users\datra\Documents\GitHubVisualStudio\Translator\Sapr_skaner\Sapr_skaner\obj\Debug\Sapr_skaner.pdb

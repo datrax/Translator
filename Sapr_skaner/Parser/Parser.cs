@@ -9,6 +9,7 @@ namespace Parser
 
     public class Parser
     {
+        
 
         List<Skaner.Lexems> Lexems;
         Skaner.Lexems CurrentLexem;
